@@ -1,0 +1,25 @@
+body{
+    background-color: #f1f5f9;
+}
+
+
+
+/* Estilos para la flecha Next del slider */
+.slick-next {
+  font-size: 24px;
+  background-color: darkgreen !important; /* Cambia el color aquí */
+  z-index: 1;
+  display: block;
+  border-radius: 100%;
+}
+
+
+
+/* Estilos para la flecha Prev del slider */
+.slick-prev {
+  font-size: 24px;
+  background-color: darkgreen !important; /* Cambia el color aquí */
+  z-index: 1;
+  display: block;
+  border-radius: 100%;
+}
