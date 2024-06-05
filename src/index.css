@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.gallery .image-gallery .image-gallery-content .image-gallery-slide-wrapper img, .gallery video {
+    margin: auto;
+    height: 550px;
+    width: auto; /* Utiliza el valor dado por el atributo HTML height */
+  }
+
+
+  @media screen and (max-width:485px){
+    .gallery .image-gallery .image-gallery-content .image-gallery-slide-wrapper img, .gallery video {
+        margin: auto;
+        height: 250px;
+        width: auto; /* Utiliza el valor dado por el atributo HTML height */
+      }
+  }

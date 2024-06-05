@@ -1,41 +1,52 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import ProductCarrousel from '../components/ProductCarrousel'
+import Label1 from '../components/Label1';
+import axios from 'axios';
+import { isAuthenticated } from '../utils/auth';
+import { toast } from 'react-toastify';
 
-const Inicio = () => {
-  const products = [
-    // Array de objetos de productos con title, description, e imageUrl
-    { title: 'Producto 1', description: 'Descripción del Producto 1', imageUrl: '/landingimg.png' },
-    { title: 'Producto 2', description: 'Descripción del Producto 2', imageUrl: '/landingimg.png' },
-    // Agrega más productos según sea necesario
-  ];
+const Inicio = () => {  
   
-  
+  const [inmuebles, setInmuebles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect( () => {
+    const fetchData = async () =>{
+      try{
+        const response = await axios.get("http://localhost:8080/inmueble")
+        setInmuebles(response.data);  
+        setLoading(false);  
+      }catch(error){
+        console.log(error)
+        setLoading(false);
+      }
+    }    
+    fetchData()
+  }, []) 
+
+  // Filtrar inmuebles una vez y almacenarlos en estados separados
+  const inmueblesAlquiler = inmuebles.filter(inmueble => inmueble.esAlquiler);
+  const inmueblesVenta = inmuebles.filter(inmueble => inmueble.esVenta);
+
   return (
     <div>
-      <section>
-      <img className='h-full w-full' src="/landingimg.png" alt="Landing Page Img" />
+      <section className='flex justify-center'>
+      <img className='h-full w-11/12' src="/landingimg.png" alt="Landing Page Img" />
       </section>
 
       <section className='font-montserra mb-16'>
-        <h1 className='font-semibold text-3xl text-green-900 text-center p-5'>Alquiler de Casas y Deptos</h1>
-        <ProductCarrousel/>
-      </section>
-
-      
-      <section className='font-montserra mb-16'>
-        <h1 className='font-semibold text-3xl text-green-900 text-center p-5'>Alquiler Local Comercial</h1>
-        <ProductCarrousel/>
-      </section>
-
-      <section className='font-montserra mb-16'>
-        <h1 className='font-semibold text-3xl text-green-900 text-center p-5'>Compra de Lotes</h1>
-        <ProductCarrousel/>
+        <Label1 className='text-center' >Alquiler de Inmuebles</Label1>
+        {loading ? (
+          <div>Cargando...</div>
+        ) : (
+          <ProductCarrousel datos={inmueblesAlquiler} />
+        )}
       </section>
 
       
       <section className='font-montserra mb-16'>
-        <h1 className='font-semibold text-3xl text-green-900 text-center p-5'>Compra de Terrenos</h1>
-        <ProductCarrousel/>
+        <Label1 className='text-center' >Venta de Inmuebles</Label1>
+        <ProductCarrousel datos={inmueblesVenta}/>
       </section>
     </div>
   )
