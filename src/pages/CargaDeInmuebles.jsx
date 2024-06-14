@@ -33,7 +33,7 @@ const CargaDeInmuebles = () => {
     if(token){
       try {
         if (editMode) {
-          const inmuebleResponse = await axios.get(`http://localhost:8080/inmueble/${id}`);
+          const inmuebleResponse = await axios.get(`http://200.58.107.39:8080/inmueble/${id}`);
           const inmuebleData = inmuebleResponse.data;
           setInmueble(inmuebleData);
           setNombre(inmuebleData.nombre);
@@ -49,25 +49,25 @@ const CargaDeInmuebles = () => {
           setEsVenta(inmuebleData.esVenta);
           setImagenes(inmuebleData.listaImagenes)
         }
-        const listaCaract = await axios.get(`http://localhost:8080/caracteristicas`,{
+        const listaCaract = await axios.get(`http://200.58.107.39:8080/caracteristicas`,{
           headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
           }
         });
-        const listaServ = await axios.get(`http://localhost:8080/servicios`,{
+        const listaServ = await axios.get(`http://200.58.107.39:8080/servicios`,{
           headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
           }
         });
-        const listaAmb = await axios.get(`http://localhost:8080/ambientes`,{
+        const listaAmb = await axios.get(`http://200.58.107.39:8080/ambientes`,{
           headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
           }
         });
-        const listaCat = await axios.get(`http://localhost:8080/categoria`,{
+        const listaCat = await axios.get(`http://200.58.107.39:8080/categoria`,{
           headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
@@ -137,7 +137,7 @@ const CargaDeInmuebles = () => {
     const token = localStorage.getItem('jwt');
     if(token){
       try{
-        axios.delete(`http://localhost:8080/inmueble/${id}/deleteImage/${nameImage}`, {
+        axios.delete(`http://200.58.107.39:8080/inmueble/${id}/deleteImage/${nameImage}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             "Content-Type": 'application/json'
@@ -191,7 +191,7 @@ const CargaDeInmuebles = () => {
     const token = localStorage.getItem('jwt');
     if(token){
       try {
-        let url = 'http://localhost:8080/inmueble';
+        let url = 'http://200.58.107.39:8080/inmueble';
         const method = editMode ? 'put' : 'post';
 
         if (editMode) {
@@ -368,7 +368,7 @@ const CargaDeInmuebles = () => {
           <div className='flex gap-3'>
         {imagenes.map(item => (
           <div className='relative' key={item}>
-            <img src={"http://localhost:8080/images/" + item} className='h-40'/>
+            <img src={"http://200.58.107.39:8080/images/" + item} className='h-40'/>
             <button
               type='button'
               onClick={() => eliminarImagen(item)}

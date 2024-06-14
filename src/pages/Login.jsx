@@ -16,7 +16,7 @@ const Login = () => {
     event.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:8080/auth/login', { email, password });
+      const response = await axios.post('http://200.58.107.39:8080/auth/login', { email, password });
       // Supón que el backend devuelve un token o un mensaje de éxito
       if (response.status === 200) {
         const token = response.data.token;

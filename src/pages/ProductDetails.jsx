@@ -21,7 +21,7 @@ const ProductDetails = () => {
     useEffect( () => {
       const fetchData = async () =>{
         try{
-          const response = await axios.get(`http://localhost:8080/inmueble/${id}`)
+          const response = await axios.get(`http://200.58.107.39:8080/inmueble/${id}`)
           setInmueble(response.data)
           setArrayDeImagenes(response.data.listaImagenes)
         }catch(error){

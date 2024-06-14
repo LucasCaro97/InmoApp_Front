@@ -15,7 +15,7 @@ const CargaDeParametrosGenerales = (tipoParametro) => {
     const token = localStorage.getItem('jwt'); 
     if(token){
       try {
-        const parametrosResponse = await axios.get(`http://localhost:8080/${tipoParametro.tipoParametro}`,{
+        const parametrosResponse = await axios.get(`http://200.58.107.39:8080/${tipoParametro.tipoParametro}`,{
           headers: {
             'Content-Type': 'application/json',  
             'Authorization': `Bearer ${token}`  
@@ -46,14 +46,14 @@ const CargaDeParametrosGenerales = (tipoParametro) => {
           'nombre': nombre
         }
         if(btnFormValue === 'Crear') {
-          const response = await axios.post(`http://localhost:8080/${tipoParametro.tipoParametro}`, data, {
+          const response = await axios.post(`http://200.58.107.39:8080/${tipoParametro.tipoParametro}`, data, {
             headers: {
               'Content-Type': 'application/json',  
               'Authorization': `Bearer ${token}`  
             }
           })
         } else{
-          const response = await axios.put(`http://localhost:8080/${tipoParametro.tipoParametro}/${idParametro}`, data,{
+          const response = await axios.put(`http://200.58.107.39:8080/${tipoParametro.tipoParametro}/${idParametro}`, data,{
             headers: {
               'Content-Type': 'application/json',  
               'Authorization': `Bearer ${token}`  

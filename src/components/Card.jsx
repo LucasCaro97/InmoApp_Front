@@ -21,7 +21,7 @@ const Card = ({title, description, imageUrl, className, id  }) => {
     const token = localStorage.getItem('jwt')
     if(token){
       try {
-        const response = await axios.delete(`http://localhost:8080/inmueble/${id}`, {
+        const response = await axios.delete(`http://200.58.107.39:8080/inmueble/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             "Content-Type": 'application/json'
@@ -61,7 +61,7 @@ const Card = ({title, description, imageUrl, className, id  }) => {
         </div>  
 
         <div className='flex h-1/2 justify-center items-center'>
-          <img src={imageUrl ?  "http://localhost:8080/images/" + imageUrl : "/landingimg.png"} alt="" className='h-full w-4/5 rounded-md' />
+          <img src={imageUrl ?  "http://200.58.107.39:8080/images/" + imageUrl : "/landingimg.png"} alt="" className='h-full w-4/5 rounded-md' />
         </div>
         
         <div className='flex flex-col justify-center items-center gap-4 p-4'>

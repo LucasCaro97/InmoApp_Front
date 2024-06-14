@@ -8,8 +8,8 @@ const ImageProductContainer = (props) => {
 
     const images = listaImagenes.length > 0 ? 
   listaImagenes.map((imageName, index) => ({
-    original: "http://localhost:8080/images/" + imageName,
-    thumbnail: "http://localhost:8080/images/" + imageName,
+    original: "http://200.58.107.39:8080/images/" + imageName,
+    thumbnail: "http://200.58.107.39:8080/images/" + imageName,
     thumbnailHeight: 200
   })) 
   : 

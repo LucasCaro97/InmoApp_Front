@@ -10,7 +10,7 @@ const Venta = () => {
   useEffect( () => {
     const fetchData = async () =>{
       try{
-        const response = await axios.get("http://localhost:8080/inmueble")
+        const response = await axios.get("http://200.58.107.39:8080/inmueble")
         setInmuebles(response.data.filter(inmueble => inmueble.esVenta))
       }catch(error){
         console.log(error)
