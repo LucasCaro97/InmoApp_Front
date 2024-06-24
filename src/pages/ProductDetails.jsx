@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Label1 from '../components/Label1'
 import ImageProductContainer from './../components/ImageProductContainer';
 import axios from 'axios';
+import "../ImageGallry.css"
 
 const ProductDetails = () => {
   
