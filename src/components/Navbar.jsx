@@ -36,12 +36,18 @@ const Navbar = () => {
     const handleClickOutside = (event) => {
         if (!event.target.closest('.menu-container') && menuOpen) {
             setMenuOpen(false);
+            setDropdownVentaOpen(false);
+            setDropdownOpen(false);
+            setDropdownParametrosOpen(false);
         }
     };
 
     const handleLinkClick = () => {
-        console.log("Accedi")
         setMenuOpen(false);
+        setDropdownVentaOpen(false);
+        setDropdownOpen(false);
+        setDropdownParametrosOpen(false);
+        
     };
 
     useEffect(() => {
