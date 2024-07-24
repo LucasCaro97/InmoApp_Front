@@ -19,10 +19,11 @@ const ProductDetails = () => {
     window.open(whatsappUrl, '_blank');
     }
 
+    const BASE_URL_API = import.meta.env.VITE_BASE_URL_API;
     useEffect( () => {
       const fetchData = async () =>{
         try{
-          const response = await axios.get(`http://200.58.107.39:8080/inmueble/${id}`)
+          const response = await axios.get(`${BASE_URL_API}/inmueble/${id}`)
           setInmueble(response.data)
           setArrayDeImagenes(response.data.listaImagenes)
         }catch(error){
