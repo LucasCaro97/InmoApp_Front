@@ -1,23 +1,39 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { Link, NavigateFunction, useNavigate } from "react-router-dom";
+import { ChangeEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../../utils/newAuth";
 import { logout } from "../../utils/newLogout";
 import styles from "./navbar.module.css";
+
+// Componente Navbar:
+// Continene los links a Inicio y Acerca de, así como dropdowns de Alquiler, Venta y Parámetros.
+// Utiliza un event listener y un estado local para manejar el menú móvil
+
 const NavBarNew = (): JSX.Element => {
-  const navigate: NavigateFunction = useNavigate();
+  const screenBreakPoint = 767
+  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(window.innerWidth > screenBreakPoint);
   const isAuth = isAuthenticated();
-  const [menuOpen, setMenuOpen] = useState(window.innerWidth > 767);
   const [optionTitles, setOptionTitles] = useState({
     alquiler: "",
     venta: "",
     parametros: "",
   });
+
+  //La ventana escucha un evento Resize para cambiar entre menu movil y menu de escritorio.
+
+  window.addEventListener("resize", () => {
+    if (menuOpen === false) {
+      setMenuOpen(window.innerWidth > screenBreakPoint);
+    }
+  });
   const handleMenuMobile = () => {
     setMenuOpen(!menuOpen);
   };
+  // En caso de utilizar el menu movil el menu debe cerrarse al hacer click.
   const handleNavigate = () => {
-    window.innerWidth < 767 && setMenuOpen(false);
+    window.innerWidth < screenBreakPoint && setMenuOpen(false);
   };
+  //Utiliza en valor de los options del select para navegar a la vista correspondiente.
   const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>): void => {
     const selectedValue: string = e.target.value;
     const { name } = e.target;
@@ -30,17 +46,13 @@ const NavBarNew = (): JSX.Element => {
       navigate(`/${selectedValue}`);
     }
   };
+  //Inicio y cierre de sesión
   const handleLogOut = () => {
     logout(navigate);
   };
   const handleLogin = () => {
     navigate("/login");
   };
-  window.addEventListener("resize", () => {
-    if (menuOpen === false) {
-      setMenuOpen(window.innerWidth > 767);
-    }
-  });
 
   return (
     <nav className={styles.navbar}>
@@ -70,44 +82,48 @@ const NavBarNew = (): JSX.Element => {
         <Link to="/sobre-nosotros" onClick={handleNavigate}>
           <li>Acerca de</li>
         </Link>
-        <li>
-          <select
-            id="alquiler-select"
-            name="alquiler"
-            value={optionTitles.alquiler}
-            onChange={handleSelectChange}
-          >
-            <option value="">Alquiler</option>
-            <option value="alquiler">Todos</option>
-            <option value="alquilerNuevo">Nuevo</option>
-          </select>
-        </li>
-        <li>
-          <select
-            id="venta-select"
-            name="venta"
-            value={optionTitles.venta}
-            onChange={handleSelectChange}
-          >
-            <option value="">Venta</option>
-            <option value="venta">Todos</option>
-            <option value="ventaNuevo">Nuevo</option>
-          </select>
-        </li>
-        <li>
-          <select
-            id="parametros-select"
-            name="parametros"
-            value={optionTitles.parametros}
-            onChange={handleSelectChange}
-          >
-            <option value="">Parametros</option>
-            <option value="nuevoCaracteristica">Caracteristicas</option>
-            <option value="nuevoServicio">Servicios</option>
-            <option value="nuevoAmbiente">Ambientes</option>
-            <option value="nuevoCategoria">Categorias</option>
-          </select>
-        </li>
+        {isAuth ? (
+          <>
+            <li>
+              <select
+                id="alquiler-select"
+                name="alquiler"
+                value={optionTitles.alquiler}
+                onChange={handleSelectChange}
+              >
+                <option value="">Alquiler</option>
+                <option value="alquiler">Todos</option>
+                <option value="alquilerNuevo">Nuevo</option>
+              </select>
+            </li>
+            <li>
+              <select
+                id="venta-select"
+                name="venta"
+                value={optionTitles.venta}
+                onChange={handleSelectChange}
+              >
+                <option value="">Venta</option>
+                <option value="venta">Todos</option>
+                <option value="ventaNuevo">Nuevo</option>
+              </select>
+            </li>
+            <li>
+              <select
+                id="parametros-select"
+                name="parametros"
+                value={optionTitles.parametros}
+                onChange={handleSelectChange}
+              >
+                <option value="">Parametros</option>
+                <option value="nuevoCaracteristica">Caracteristicas</option>
+                <option value="nuevoServicio">Servicios</option>
+                <option value="nuevoAmbiente">Ambientes</option>
+                <option value="nuevoCategoria">Categorias</option>
+              </select>
+            </li>
+          </>
+        ) : null}
       </ul>
       {isAuth ? (
         <button

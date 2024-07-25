@@ -4,7 +4,10 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  font-size: 18px;
+  font-weight: 600;
+  color: #033a11;
 }
 .navList {
   display: flex;
@@ -14,8 +17,8 @@
   cursor: pointer;
   margin-right: 20px;
 }
-.navList li :hover {
-  text-decoration: dashed;
+.navList a :hover {
+  text-decoration: underline;
 }
 
 @media screen and (max-width: 767px) {
@@ -35,8 +38,6 @@
   .navList a,
   .navList select {
     background-color: #f1f1f1;
-    color: #033a11;
-    font-weight: 600;
     width: 80vw;
     margin-right: 0;
     padding: 10px;
