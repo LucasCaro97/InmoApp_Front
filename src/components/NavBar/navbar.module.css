@@ -1,0 +1,44 @@
+.navbar {
+  width: 100vw;
+  padding: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+.navList {
+  display: flex;
+}
+.navList a,
+.navbar select {
+  cursor: pointer;
+  margin-right: 20px;
+}
+.navList li :hover {
+  text-decoration: dashed;
+}
+
+@media screen and (max-width: 767px) {
+  .navbar {
+    justify-content: space-between;
+  }
+  .navList {
+    position: absolute;
+    top: 4rem;
+    left: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    background-color: #f1f1f1;
+  }
+  .navList a,
+  .navList select {
+    background-color: #f1f1f1;
+    color: #033a11;
+    font-weight: 600;
+    width: 80vw;
+    margin-right: 0;
+    padding: 10px;
+  }
+}

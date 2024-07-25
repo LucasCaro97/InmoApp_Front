@@ -45,6 +45,7 @@ const LoginForm = (): JSX.Element => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="on"
             />
           </div>
           <div className="mb-4">
