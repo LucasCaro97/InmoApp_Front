@@ -6,7 +6,7 @@ import axios from 'axios';
 import { isAuthenticated } from '../utils/auth';
 
 const Card = ({title, description, imageUrl, className, id  }) => {
-    
+  const BASE_URL_API = import.meta.env.VITE_BASE_URL_API;
   const navigate = useNavigate();
 
   const handleViewMore = () => {
@@ -21,7 +21,7 @@ const Card = ({title, description, imageUrl, className, id  }) => {
     const token = localStorage.getItem('jwt')
     if(token){
       try {
-        const response = await axios.delete(`http://200.58.107.39:8080/inmueble/${id}`, {
+        const response = await axios.delete(`${BASE_URL_API}/inmueble/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             "Content-Type": 'application/json'
