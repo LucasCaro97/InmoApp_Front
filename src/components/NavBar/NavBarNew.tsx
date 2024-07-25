@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Link, NavigateFunction, useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../../utils/newAuth";
 import { logout } from "../../utils/newLogout";
@@ -15,6 +15,9 @@ const NavBarNew = (): JSX.Element => {
   const handleMenuMobile = () => {
     setMenuOpen(!menuOpen);
   };
+  const handleNavigate = () => {
+    window.innerWidth < 767 && setMenuOpen(false);
+  };
   const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>): void => {
     const selectedValue: string = e.target.value;
     const { name } = e.target;
@@ -23,6 +26,7 @@ const NavBarNew = (): JSX.Element => {
         ...optionTitles,
         [name]: "",
       });
+      handleNavigate();
       navigate(`/${selectedValue}`);
     }
   };
@@ -34,8 +38,8 @@ const NavBarNew = (): JSX.Element => {
   };
   window.addEventListener("resize", () => {
     if (menuOpen === false) {
-      setMenuOpen(window.innerWidth > 767)
-    } 
+      setMenuOpen(window.innerWidth > 767);
+    }
   });
 
   return (
@@ -60,10 +64,10 @@ const NavBarNew = (): JSX.Element => {
         className={styles.navList}
         style={menuOpen ? { display: "flex" } : { display: "none" }}
       >
-        <Link to="/">
+        <Link to="/" onClick={handleNavigate}>
           <li>Inicio</li>
         </Link>
-        <Link to="/sobre-nosotros">
+        <Link to="/sobre-nosotros" onClick={handleNavigate}>
           <li>Acerca de</li>
         </Link>
         <li>
