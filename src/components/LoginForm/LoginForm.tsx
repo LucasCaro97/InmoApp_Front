@@ -1,42 +1,27 @@
-import React, { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import React, { FormEvent, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
+import { logging } from "../../utils/logging";
 import { useNavigate } from "react-router-dom";
-const BASE_URL_API = import.meta.env.VITE_BASE_URL_API;
+import { toast } from "react-toastify";
 
-const Login = () => {
+const LoginForm = (): JSX.Element => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleLogin = async (event) => {
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    try {
-      const response = await axios.post(`${BASE_URL_API}/auth/login`, {
-        email,
-        password,
-      });
-      // Supón que el backend devuelve un token o un mensaje de éxito
-      if (response.status === 200) {
-        const token = response.data.token;
-        localStorage.setItem("jwt", token);
-        navigate("/");
-        // Aquí puedes redirigir al usuario a otra página, guardar el token, etc.
-      } else {
-        toast.error("Error al iniciar sesión");
-      }
-    } catch (error) {
-      console.log(error);
-      if (error.response && error.response.status === 401) {
-        toast.error("La contraseña es incorrecta");
-      }
-    } finally {
-      setLoading(false);
+    const result = await logging(email, password);
+    if (result.ok) {
+      navigate("/");
+    } else {
+      toast.error(result.message);
     }
+    setLoading(false);
   };
 
   return (
@@ -91,4 +76,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginForm;

@@ -12,7 +12,7 @@ import CargaDeParametrosGenerales from './pages/CargaDeParametrosGenerales'
 import CargaDeInmuebles from './pages/CargaDeInmuebles'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import Login from './pages/Login'
+import LoginForm from './components/LoginForm/LoginForm'
 
 function App() {
   return (
@@ -36,7 +36,7 @@ function App() {
             <Route path='/ventaNuevo' element={<CargaDeInmuebles />} />
             <Route path='/editarInmueble/:id' element={<CargaDeInmuebles />} />
             <Route path='/nuevoCategoria' element={<CargaDeParametrosGenerales tipoParametro={'categoria'} />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<LoginForm />} />
           </Routes>
         </div>
       </Router>
