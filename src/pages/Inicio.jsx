@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import ProductCarrousel from "../components/ProductCarrousel";
 import Label1 from "../components/Label1";
 import axios from "axios";
-import { isAuthenticated } from "../utils/auth";
-import { toast } from "react-toastify";
-
 const Inicio = () => {
   const BASE_URL_API = import.meta.env.VITE_BASE_URL_API;
   const [inmuebles, setInmuebles] = useState([]);
