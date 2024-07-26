@@ -1,0 +1,14 @@
+/* Estilos para la flecha Prev y Next del slider */
+.slick-next,
+.slick-prev {
+  font-size: 24px;
+  background-color: #075f07 !important;
+  z-index: 1;
+  display: block;
+  border-radius: 100%;
+}
+
+.slick-next:hover,
+.slick-prev:hover {
+  background-color: #0c850cce !important;
+}
