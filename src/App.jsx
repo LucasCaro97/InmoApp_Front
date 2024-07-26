@@ -9,7 +9,7 @@ import Footer from "./components/Footer";
 import Product from "./pages/Product";
 import ProductDetails from "./pages/ProductDetails";
 import CargaDeParametrosGenerales from "./pages/CargaDeParametrosGenerales";
-import CargaDeInmuebles from "./pages/CargaDeInmuebles";
+import CargaDeInmuebles from "./pages/CargaInmuebles/CargaDeInmuebles";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import LoginForm from "./components/LoginForm/LoginForm";
@@ -42,6 +42,7 @@ function App() {
             path="/nuevoAmbiente"
             element={<CargaDeParametrosGenerales tipoParametro={"ambientes"} />}
           />
+          
           <Route path="/alquilerNuevo" element={<CargaDeInmuebles />} />
           <Route path="/ventaNuevo" element={<CargaDeInmuebles />} />
           <Route path="/editarInmueble/:id" element={<CargaDeInmuebles />} />

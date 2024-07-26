@@ -27,13 +27,14 @@
   }
   .navList {
     position: absolute;
-    top: 4rem;
+    top: 3rem;
     left: 4rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
     background-color: #f1f1f1;
+    padding: 6px;
   }
   .navList a,
   .navList select {
@@ -41,5 +42,8 @@
     width: 80vw;
     margin-right: 0;
     padding: 10px;
+  }
+  .navList option {
+    background-color: red;
   }
 }

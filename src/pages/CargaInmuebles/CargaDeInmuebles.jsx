@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Label1 from "../components/Label1";
+import Label1 from "../../components/Label1";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-
+import "./styles.css"
 const CargaDeInmuebles = () => {
   const { id } = useParams();
 
@@ -44,9 +44,9 @@ const CargaDeInmuebles = () => {
           setProvincia(inmuebleData.provincia);
           setDescripcion(inmuebleData.descripcion);
           setCategoria(inmuebleData.categoria.id);
-          setCaracteristicas(inmuebleData.caracteristicas.map((c) => c.id));
-          setServicios(inmuebleData.servicios.map((s) => s.id));
-          setAmbientes(inmuebleData.ambientes.map((a) => a.id));
+          setCaracteristicas(inmuebleData.caracteristicas?.map((c) => c.id));
+          setServicios(inmuebleData.servicios?.map((s) => s.id));
+          setAmbientes(inmuebleData.ambientes?.map((a) => a.id));
           setEsAlquiler(inmuebleData.esAlquiler);
           setEsVenta(inmuebleData.esVenta);
           setImagenes(inmuebleData.listaImagenes);
@@ -113,28 +113,30 @@ const CargaDeInmuebles = () => {
     setCategoria(event.target.value);
   };
 
-  const handleCaracteristicasChange = (event) => {
-    const opcionesSeleccionadas = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
+  const handleCaracteristicasChange = (id) => {
+    setCaracteristicas((prevCaracteristicas) =>
+      prevCaracteristicas.includes(id)
+        ? prevCaracteristicas.filter(
+            (caracteristicaId) => caracteristicaId !== id
+          )
+        : [...prevCaracteristicas, id]
     );
-    setCaracteristicas(opcionesSeleccionadas);
   };
 
-  const handleServiciosChange = (event) => {
-    const opcionesSeleccionadas = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
+  const handleServiciosChange = (id) => {
+    setServicios((prevServicios) =>
+      prevServicios.includes(id)
+        ? prevServicios.filter((servicioId) => servicioId !== id)
+        : [...prevServicios, id]
     );
-    setServicios(opcionesSeleccionadas);
   };
 
-  const handleAmbientesChange = (event) => {
-    const opcionesSeleccionadas = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
+  const handleAmbientesChange = (id) => {
+    setAmbientes((prevAmbientes) =>
+      prevAmbientes.includes(id)
+        ? prevAmbientes.filter((ambienteId) => ambienteId !== id)
+        : [...prevAmbientes, id]
     );
-    setAmbientes(opcionesSeleccionadas);
   };
 
   const handleImagenesChange = (event) => {
@@ -148,15 +150,12 @@ const CargaDeInmuebles = () => {
     if (token) {
       try {
         axios
-          .delete(
-            `${BASE_URL_API}/inmueble/${id}/deleteImage/${nameImage}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          )
+          .delete(`${BASE_URL_API}/inmueble/${id}/deleteImage/${nameImage}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          })
           .then((response) => {
             if (response.status === 200) {
               toast.success("Imagen eliminada correctamente");
@@ -244,7 +243,8 @@ const CargaDeInmuebles = () => {
       }
     }
   };
-
+  console.log("ambientes!");
+  console.log(ambientes);
   return (
     <div>
       <div className="w-3/4 m-auto 2xl:px-36">
@@ -264,7 +264,7 @@ const CargaDeInmuebles = () => {
               type="text"
               onChange={handleNameChange}
               value={nombre}
-              className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 w-full"
+              className="inputText"
               id="nombreInmueble"
               required
             />
@@ -280,7 +280,7 @@ const CargaDeInmuebles = () => {
               type="text"
               onChange={handleDireccionChange}
               value={direccion}
-              className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 w-full"
+              className="inputText"
               id="direccion"
               required
             />
@@ -296,7 +296,7 @@ const CargaDeInmuebles = () => {
               type="text"
               onChange={handleCiudadChange}
               value={ciudad}
-              className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 w-full"
+              className="inputText"
               id="ciudad"
               required
             />
@@ -312,7 +312,8 @@ const CargaDeInmuebles = () => {
               type="text"
               onChange={handleProvinciaChange}
               value={provincia}
-              className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 w-full"
+              className="inputText"
+              // className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 w-full"
               id="provincia"
               required
             />
@@ -327,7 +328,8 @@ const CargaDeInmuebles = () => {
             <textarea
               onChange={handleDescripcionChange}
               value={descripcion}
-              className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 w-full h-28 resize-none"
+              rows="4" cols="50"
+              className="inputText"
               id="descripcion"
             />
           </div>
@@ -347,7 +349,7 @@ const CargaDeInmuebles = () => {
                 <option value="" disabled>
                   Seleccionar categoría
                 </option>
-                {listaDeCategorias.map((cat) => (
+                {listaDeCategorias?.map((cat) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.nombre}
                   </option>
@@ -384,18 +386,20 @@ const CargaDeInmuebles = () => {
             >
               Características
             </label>
-            <select
-              onChange={handleCaracteristicasChange}
-              multiple
-              value={caracteristicas}
-              className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 w-full h-28"
-            >
-              {listaDeCaracteristicas.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.nombre}
-                </option>
+            <div className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 w-full h-28 overflow-auto">
+              {listaDeCaracteristicas?.map((cat) => (
+                <label key={cat.id} className="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    value={cat.id}
+                    checked={caracteristicas.includes(cat.id)}
+                    onChange={() => handleCaracteristicasChange(cat.id)}
+                    className="form-checkbox h-5 w-5 text-indigo-600"
+                  />
+                  <span className="text-gray-700">{cat.nombre}</span>
+                </label>
               ))}
-            </select>
+            </div>
           </div>
           <div className="flex flex-col">
             <label
@@ -404,18 +408,20 @@ const CargaDeInmuebles = () => {
             >
               Servicios
             </label>
-            <select
-              onChange={handleServiciosChange}
-              multiple
-              value={servicios}
-              className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 w-full h-28"
-            >
-              {listaDeServicios.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.nombre}
-                </option>
+            <div className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 w-full h-28 overflow-auto">
+              {listaDeServicios?.map((cat) => (
+                <label key={cat.id} className="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    value={cat.id}
+                    checked={servicios.includes(cat.id)}
+                    onChange={() => handleServiciosChange(cat.id)}
+                    className="form-checkbox h-5 w-5 text-indigo-600"
+                  />
+                  <span className="text-gray-700">{cat.nombre}</span>
+                </label>
               ))}
-            </select>
+            </div>
           </div>
           <div className="flex flex-col">
             <label
@@ -424,26 +430,28 @@ const CargaDeInmuebles = () => {
             >
               Ambientes
             </label>
-            <select
-              onChange={handleAmbientesChange}
-              multiple
-              value={ambientes}
-              className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 w-full h-28"
-            >
-              {listaDeAmbientes.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.nombre}
-                </option>
+            <div className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 w-full h-28 overflow-auto">
+              {listaDeAmbientes?.map((cat) => (
+                <label key={cat.id} className="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    value={cat.id}
+                    checked={ambientes.includes(cat.id)}
+                    onChange={() => handleAmbientesChange(cat.id)}
+                    className="form-checkbox h-5 w-5 text-indigo-600"
+                  />
+                  <span className="text-gray-700">{cat.nombre}</span>
+                </label>
               ))}
-            </select>
+            </div>
           </div>
 
           <div className="flex flex-col col-span-full gap-2">
             <div className="flex gap-3">
-              {imagenes.map((item) => (
+              {imagenes?.map((item) => (
                 <div className="relative" key={item}>
                   <img
-                    src={"http://200.58.107.39:8080/images/" + item}
+                    src={`${BASE_URL_API}/images/` + item}
                     className="h-40"
                   />
                   <button

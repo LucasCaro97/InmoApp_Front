@@ -61,11 +61,10 @@ const Card = ({title, description, imageUrl, className, id  }) => {
         </div>  
 
         <div className='flex h-1/2 justify-center items-center'>
-          <img src={imageUrl ?  "http://200.58.107.39:8080/images/" + imageUrl : "/landingimg.png"} alt="" className='h-full w-4/5 rounded-md' />
+          <img src={imageUrl ?  `${BASE_URL_API}/images/` + imageUrl : "/landingimg.png"} alt="" className='h-full w-4/5 rounded-md' />
         </div>
         
         <div className='flex flex-col justify-center items-center gap-4 p-4'>
-          <p>{description}</p>
           <button className='bg-green-900 text-slate-300 text-lg px-6 py-1 rounded-xl' onClick={handleViewMore}>Ver mas</button>
           {isAuthenticated() && (
             <div className='flex gap-2'>
