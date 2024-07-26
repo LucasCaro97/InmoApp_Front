@@ -1,0 +1,48 @@
+.cardContainer {
+  max-width: 400px;
+  min-width: 200px;
+  padding: 5px;
+}
+.cardContainer h2 {
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0;
+  padding: 5px;
+}
+button {
+  border-radius: 5px;
+}
+.buttonsSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 5px;
+}
+.buttonsSection span {
+  margin-right: 5px;
+  cursor: pointer;
+}
+.buttonsSection img {
+  filter: opacity(90%);
+  width: 20px;
+  height: auto;
+}
+.buttonsSection img:hover {
+  filter: opacity(60%);
+}
+.imageCard {
+  padding: 5px;
+  object-fit: contain;
+}
+.seeMoreBtn {
+  font-weight: 600;
+  background-color: #0c743b;
+  color: #f1f1f1;
+  padding: 5px;
+}
+@media screen and (max-width: 1080px) {
+  .cardContainer h2 {
+    font-size: 16px;
+  }
+}

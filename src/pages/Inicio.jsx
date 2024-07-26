@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ProductCarrousel from "../components/ProductCarrousel";
+import ProductCarrousel from "../components/ProductCarrousel/ProductCarrousel";
 import Label1 from "../components/Label1";
 import axios from "axios";
 const Inicio = () => {
