@@ -8,7 +8,7 @@ import "./styles.css";
 const ProductCarrousel = ({ datos }) => {
   const [slidesToShow, setSlidesToShow] = useState(datos.length);
   const screenBreakPoints = {
-    small: 767,
+    small: 500,
     medium: 1023,
   };
 
@@ -16,8 +16,8 @@ const ProductCarrousel = ({ datos }) => {
     if (window.innerWidth <= screenBreakPoints.small) {
       setSlidesToShow(1);
     } else if (window.innerWidth <= screenBreakPoints.medium) {
-      datos.length >= 4
-        ? setSlidesToShow(Math.floor(datos.length / 2))
+      datos.length >= 2
+        ? setSlidesToShow(2)
         : setSlidesToShow(datos.length);
     } else {
       setSlidesToShow(4);
