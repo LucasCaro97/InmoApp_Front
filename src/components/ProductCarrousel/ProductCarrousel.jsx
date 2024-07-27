@@ -46,10 +46,10 @@ const ProductCarrousel = ({ datos }) => {
           {datos.map((p, index) => (
             <Card
               key={p.id}
-              title={p.nombre}
-              description={p.descripcion}
               id={p.id}
+              title={p.nombre}
               imageUrl={p.listaImagenes[0]}
+              description={p.descripcion}
             />
           ))}
         </Slider>

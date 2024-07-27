@@ -1,7 +1,11 @@
 .cardContainer {
-  max-width: 400px;
-  min-width: 200px;
+  height: 300px;
+  min-width: 200;
   padding: 5px;
+}
+.cardContainer:hover {
+  cursor: pointer;
+  filter: drop-shadow(0 0 0.4rem rgba(0, 110, 40, 0.8));
 }
 .cardContainer h2 {
   font-weight: 600;
@@ -34,12 +38,27 @@ button {
 .imageCard {
   padding: 5px;
   object-fit: contain;
+  max-width: 90%;
 }
 .seeMoreBtn {
   font-weight: 600;
   background-color: #0c743b;
   color: #f1f1f1;
   padding: 5px;
+}
+.resumeContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.resumeContainer p {
+  margin-left: 10px;
+  padding: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  -webkit-mask-image: linear-gradient(to bottom, #333 60%, transparent);
+  mask-image: linear-gradient(to bottom, #333 60%, transparent);
 }
 @media screen and (max-width: 1080px) {
   .cardContainer h2 {
