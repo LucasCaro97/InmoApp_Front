@@ -67,7 +67,7 @@ const Card = ({ id, title, imageUrl, description }) => {
               <h2>{title}</h2>
             </div>
 
-            <div className="flex h-1/2 justify-center items-center">
+            <div className="flex justify-center items-center">
               <img
                 src={
                   imageUrl

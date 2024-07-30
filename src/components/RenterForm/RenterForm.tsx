@@ -1,0 +1,86 @@
+import { useState, FormEvent } from "react";
+import styles from "./RenterForm.module.css";
+import { saveNewOwner } from "../../utils/saveNewOwner";
+import { toast } from "react-toastify";
+const RenterForm = (): JSX.Element => {
+  //   String nombreCompleto;
+  // String dni;
+  // String cuil
+  // String telefono
+  // String correo
+  const initialState: Renter = {
+    nombreCompleto: "",
+    dni: "",
+    cuil: "",
+    telefono: "",
+    correo: "",
+  };
+
+  const [newRenter, setNewRenter] = useState<Renter>(initialState);
+
+  const handleInputChange = (e: FormEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const { name, value } = e.currentTarget;
+    setNewRenter({ ...newRenter, [name]: value });
+  };
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // const result = await saveNewOwner(newRenter);
+    // if (result.ok) {
+    //   setNewRenter(initialState);
+    //   toast.success(result.message);
+    // } else {
+    //   toast.error(result.message);
+    // }
+  };
+  return (
+    <>
+      <h2 className={styles.title}>Nuevo inquilino</h2>
+      <form className={styles.formContainer} onSubmit={handleSubmit}>
+        <label htmlFor="nombreCompleto">Nombre completo:</label>
+        <input
+          type="text"
+          name="nombreCompleto"
+          id="nombreCompleto"
+          value={newRenter.nombreCompleto}
+          onChange={handleInputChange}
+        />
+        <label htmlFor="dni">DNI:</label>
+        <input
+          type="number"
+          name="dni"
+          id="dni"
+          value={newRenter.dni}
+          onChange={handleInputChange}
+        />
+        <label htmlFor="cuil">Cuil:</label>
+        <input
+          type="text"
+          name="cuil"
+          id="cuil"
+          value={newRenter.cuil}
+          onChange={handleInputChange}
+        />
+        <label htmlFor="telefono">Teléfono:</label>
+        <input
+          type="text"
+          name="telefono"
+          id="telefono"
+          value={newRenter.telefono}
+          onChange={handleInputChange}
+        />
+
+        <label htmlFor="correo">Correo:</label>
+        <input
+          type="email"
+          name="correo"
+          id="correo"
+          value={newRenter.correo}
+          onChange={handleInputChange}
+        />
+        <button>Cargar</button>
+      </form>
+    </>
+  );
+};
+export { RenterForm };

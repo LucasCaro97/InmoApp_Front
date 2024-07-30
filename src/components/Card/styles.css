@@ -39,6 +39,7 @@ button {
   padding: 5px;
   object-fit: contain;
   max-width: 90%;
+  max-height: 150px;
 }
 .seeMoreBtn {
   font-weight: 600;

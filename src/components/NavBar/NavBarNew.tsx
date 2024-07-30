@@ -17,6 +17,7 @@ const NavBarNew = (): JSX.Element => {
     alquiler: "",
     venta: "",
     parametros: "",
+    altas: "",
   });
 
   //La ventana escucha un evento Resize para cambiar entre menu movil y menu de escritorio.
@@ -122,6 +123,19 @@ const NavBarNew = (): JSX.Element => {
                 <option value="nuevoCategoria">Categorias</option>
               </select>
             </li>
+            <li>
+              <select
+                id="altas-select"
+                name="altas"
+                value={optionTitles.altas}
+                onChange={handleSelectChange}
+              >
+                <option value="">Altas</option>
+                <option value="propietario">Propietario</option>
+                <option value="inquilino">Inquilino</option>
+              </select>
+            </li>
+            <li></li>
           </>
         ) : null}
       </ul>

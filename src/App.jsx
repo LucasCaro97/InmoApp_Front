@@ -13,7 +13,8 @@ import CargaDeInmuebles from "./pages/CargaInmuebles/CargaDeInmuebles";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import LoginForm from "./components/LoginForm/LoginForm";
-
+import { OwnersView } from "./pages/OwnersView/OwnersView";
+import { RenterForm } from "./components/RenterForm/RenterForm";
 function App() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -28,6 +29,8 @@ function App() {
           <Route path="/venta" element={<Venta />} />
           <Route path="/product" element={<Product />} />
           <Route path="/product-details/:id" element={<ProductDetails />} />
+          <Route path="/propietario" element={<OwnersView />} />
+          <Route path="/inquilino" element={<RenterForm />} />
           <Route
             path="/nuevoCaracteristica"
             element={
@@ -42,7 +45,7 @@ function App() {
             path="/nuevoAmbiente"
             element={<CargaDeParametrosGenerales tipoParametro={"ambientes"} />}
           />
-          
+
           <Route path="/alquilerNuevo" element={<CargaDeInmuebles />} />
           <Route path="/ventaNuevo" element={<CargaDeInmuebles />} />
           <Route path="/editarInmueble/:id" element={<CargaDeInmuebles />} />
