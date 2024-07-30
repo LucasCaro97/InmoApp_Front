@@ -7,3 +7,16 @@ th {
 tbody {
   font-size: 12px;
 }
+.iconsRow {
+  display: flex;
+  flex-direction: row;
+}
+.iconsRow img {
+  filter: opacity(90%);
+  margin: 2px;
+  width: 15px;
+  cursor: pointer;
+}
+.iconsRow img:hover {
+  filter: opacity(60%);
+}

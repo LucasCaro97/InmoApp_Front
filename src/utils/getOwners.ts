@@ -2,8 +2,8 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL_API;
 const getOwners = async (): Promise<Array<Owner> | null> => {
+  const token = localStorage.getItem("jwt");
   try {
-    const token = localStorage.getItem("jwt");
     const result = await axios.get(`${BASE_URL}/propietario`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -19,4 +19,24 @@ const getOwners = async (): Promise<Array<Owner> | null> => {
   }
 };
 
-export { getOwners };
+const getOwnerById = async (id: number): Promise<Owner | null> => {
+  try {
+    const token = localStorage.getItem("jwt");
+    const result = await axios.get(`${BASE_URL}/propietario/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (result.status === 200) {
+      const data: Owner = result.data;
+      return data;
+    }
+    return null;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export { getOwners, getOwnerById };

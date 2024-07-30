@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import LoginForm from "./components/LoginForm/LoginForm";
 import { OwnersView } from "./pages/OwnersView/OwnersView";
+import { EditOwner } from "./pages/EditOwner/EditOwner";
 import { RenterForm } from "./components/RenterForm/RenterForm";
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/product" element={<Product />} />
           <Route path="/product-details/:id" element={<ProductDetails />} />
           <Route path="/propietario" element={<OwnersView />} />
+          <Route path="/editarPropietario/:id" element={<EditOwner />} />
           <Route path="/inquilino" element={<RenterForm />} />
           <Route
             path="/nuevoCaracteristica"

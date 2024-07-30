@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
 import { getOwners } from "../../utils/getOwners";
+import deleteImage from "../../icons/delete.png";
+import editImage from "../../icons/edit.png";
+import { deleteOwner } from "../../utils/deleteOwner";
 import "./styles.css";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { ModalConfirm } from "../ModalConfirm/ModalConfirm";
 const OwnersTable = (): JSX.Element => {
-  const [owners, setOwners] = useState<Array<Owner>>();
+  const navigate = useNavigate();
+  const [owners, setOwners] = useState<Array<Owner>>([]);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [ownerToDelete, setOwnerToDelete] = useState<number>();
   useEffect(() => {
     const loadOwners = async () => {
       const result = await getOwners();
@@ -12,10 +21,38 @@ const OwnersTable = (): JSX.Element => {
     };
     loadOwners();
   }, []);
+  const handleDelete = async (id: number | undefined) => {
+    if (id) {
+      setOwnerToDelete(id);
+      setOpenModal(true);
+    }
+  };
+  const confirmDelete = async () => {
+    if (ownerToDelete !== undefined) {
+      const result = await deleteOwner(ownerToDelete);
+      console.log(result);
+      if (result.ok) {
+        toast.success(result.message);
+        setOwners(owners.filter((owner) => owner.id !== ownerToDelete));
+      } else {
+        toast.error("No se puedo eliminar el propietario");
+      }
+    }
+  };
+  const handleEdit = (id: number | undefined) => {
+    navigate(`/editarPropietario/${id}`);
+  };
   return (
     <div className="ownersTable">
+      {openModal ? (
+        <ModalConfirm
+          message="Desea eliminar el propietario?"
+          setOpenModal={setOpenModal}
+          onConfirm={confirmDelete}
+        />
+      ) : null}
       <div className="container mx-auto mb-4">
-        {owners && owners.length > 0 ? (
+        {owners.length > 0 ? (
           <table className="table-auto w-full border-collapse border border-gray-300">
             <thead>
               <tr>
@@ -34,8 +71,8 @@ const OwnersTable = (): JSX.Element => {
               </tr>
             </thead>
             <tbody>
-              {owners?.map((owner) => (
-                <tr key={owner.id || owner.dni}>
+              {owners?.map((owner, i) => (
+                <tr key={owner.dni + i}>
                   <td className="border border-gray-300 px-4 py-2">
                     {owner.id || "N/A"}
                   </td>
@@ -59,6 +96,18 @@ const OwnersTable = (): JSX.Element => {
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
                     {owner.porcentaje_comision}%
+                  </td>
+                  <td>
+                    <span className="iconsRow">
+                      <img
+                        src={deleteImage}
+                        onClick={() => handleDelete(owner.id)}
+                      />
+                      <img
+                        src={editImage}
+                        onClick={() => handleEdit(owner.id)}
+                      />
+                    </span>
                   </td>
                 </tr>
               ))}
