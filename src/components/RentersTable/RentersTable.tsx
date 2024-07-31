@@ -1,111 +1,99 @@
 import { useEffect, useState } from "react";
-import { getOwners } from "../../utils/owners/getOwners";
+import { getRenters } from "../../utils/renters/getRenters";
 import deleteImage from "../../icons/delete.png";
 import editImage from "../../icons/edit.png";
-import { deleteOwner } from "../../utils/owners/deleteOwner";
-import "./styles.css";
+import { deleteRenter } from "../../utils/renters/deleteRenter";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { ModalConfirm } from "../ModalConfirm/ModalConfirm";
-const OwnersTable = (): JSX.Element => {
+import "./styles.css";
+const RentersTable = (): JSX.Element => {
   const navigate = useNavigate();
-  const [owners, setOwners] = useState<Array<Owner>>([]);
+  const [renters, setRenters] = useState<Array<Renter>>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [ownerToDelete, setOwnerToDelete] = useState<number>();
+  const [renterToDelete, setRenterToDelete] = useState<number>();
   useEffect(() => {
     const loadOwners = async () => {
-      const result = await getOwners();
+      const result = await getRenters();
       if (result) {
-        setOwners(result);
+        setRenters(result);
       }
     };
     loadOwners();
   }, []);
   const handleDelete = async (id: number | undefined) => {
     if (id) {
-      setOwnerToDelete(id);
+      setRenterToDelete(id);
       setOpenModal(true);
     }
   };
   const confirmDelete = async () => {
-    if (ownerToDelete !== undefined) {
-      const result = await deleteOwner(ownerToDelete);
+    if (renterToDelete !== undefined) {
+      const result = await deleteRenter(renterToDelete);
       console.log(result);
       if (result.ok) {
         toast.success(result.message);
-        setOwners(owners.filter((owner) => owner.id !== ownerToDelete));
+        setRenters(renters.filter((renter) => renter.id !== renterToDelete));
       } else {
-        toast.error("No se puedo eliminar el propietario");
+        toast.error("No se puedo eliminar el inquilino");
       }
     }
   };
   const handleEdit = (id: number | undefined) => {
-    navigate(`/editarPropietario/${id}`);
+    navigate(`/editarInquilino/${id}`);
   };
   return (
     <div className="ownersTable">
       {openModal ? (
         <ModalConfirm
-          message="Desea eliminar el propietario?"
+          message="Desea eliminar el inquilino?"
           setOpenModal={setOpenModal}
           onConfirm={confirmDelete}
         />
       ) : null}
       <div className="container mx-auto mb-4">
-        {owners.length > 0 ? (
+        {renters.length > 0 ? (
           <table className="table-auto w-full border-collapse border border-gray-300">
             <thead>
               <tr>
                 <th className="border border-gray-300 px-4 py-2">ID</th>
-                <th className="border border-gray-300 px-4 py-2">
-                  Propietario
-                </th>
+                <th className="border border-gray-300 px-4 py-2">Inquilino</th>
                 <th className="border border-gray-300 px-4 py-2">DNI</th>
                 <th className="border border-gray-300 px-4 py-2">CUIL</th>
                 <th className="border border-gray-300 px-4 py-2">Teléfono</th>
-                <th className="border border-gray-300 px-4 py-2">Dirección</th>
                 <th className="border border-gray-300 px-4 py-2">Correo</th>
-                <th className="border border-gray-300 px-4 py-2">
-                  Comisión (%)
-                </th>
               </tr>
             </thead>
             <tbody>
-              {owners?.map((owner, i) => (
-                <tr key={owner.dni + i}>
+              {renters?.map((renter, i) => (
+                <tr key={renter.dni + i}>
                   <td className="border border-gray-300 px-4 py-2">
-                    {owner.id || "N/A"}
+                    {renter.id || "N/A"}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    {owner.nombreCompleto}
+                    {renter.nombreCompleto}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    {owner.dni}
+                    {renter.dni}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    {owner.cuil}
+                    {renter.cuil}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    {owner.telefono}
+                    {renter.telefono}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    {owner.direccion}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {owner.correo}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {owner.porcentaje_comision}%
+                    {renter.correo}
                   </td>
                   <td>
                     <span className="iconsRow">
                       <img
                         src={deleteImage}
-                        onClick={() => handleDelete(owner.id)}
+                        onClick={() => handleDelete(renter.id)}
                       />
                       <img
                         src={editImage}
-                        onClick={() => handleEdit(owner.id)}
+                        onClick={() => handleEdit(renter.id)}
                       />
                     </span>
                   </td>
@@ -114,10 +102,10 @@ const OwnersTable = (): JSX.Element => {
             </tbody>
           </table>
         ) : (
-          <p className="text-center">No hay propietarios disponibles.</p>
+          <p className="text-center">No hay inquilinos disponibles.</p>
         )}
       </div>
     </div>
   );
 };
-export { OwnersTable };
+export { RentersTable };

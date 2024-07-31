@@ -1,7 +1,7 @@
 import { useState, FormEvent } from "react";
 import styles from "./RenterForm.module.css";
-import { saveNewOwner } from "../../utils/saveNewOwner";
 import { toast } from "react-toastify";
+import { saveNewRenter } from "../../utils/renters/saveNewRenter";
 const RenterForm = (): JSX.Element => {
   //   String nombreCompleto;
   // String dni;
@@ -25,13 +25,13 @@ const RenterForm = (): JSX.Element => {
   };
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // const result = await saveNewOwner(newRenter);
-    // if (result.ok) {
-    //   setNewRenter(initialState);
-    //   toast.success(result.message);
-    // } else {
-    //   toast.error(result.message);
-    // }
+    const result = await saveNewRenter(newRenter);
+    if (result.ok) {
+      setNewRenter(initialState);
+      toast.success(result.message);
+    } else {
+      toast.error(result.message);
+    }
   };
   return (
     <>

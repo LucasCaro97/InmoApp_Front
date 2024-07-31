@@ -1,8 +1,8 @@
 import { useEffect, useState, FormEvent } from "react";
 import { useParams } from "react-router-dom";
-import { getOwnerById } from "../../utils/getOwners";
+import { getOwnerById } from "../../utils/owners/getOwners";
 import styles from "./OwnerForm.module.css";
-import { updateOwner } from "../../utils/updateOwner";
+import { updateOwner } from "../../utils/owners/updateOwner";
 import { toast } from "react-toastify";
 
 const EditOwner = (): JSX.Element => {
@@ -16,13 +16,11 @@ const EditOwner = (): JSX.Element => {
     correo: "",
     porcentaje_comision: 0,
   };
-  const [owner, setOwner] = useState<Owner>();
   const [newOwner, setNewOwner] = useState<Owner>(initialState);
   useEffect(() => {
     const loadOwner = async (id: number) => {
       const result = await getOwnerById(id);
       if (result) {
-        setOwner(result);
         setNewOwner(result);
       }
     };

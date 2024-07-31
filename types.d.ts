@@ -9,6 +9,7 @@ type Owner = {
   porcentaje_comision: number;
 };
 type Renter = {
+  id?: number;
   nombreCompleto: string;
   dni: string;
   cuil: string;

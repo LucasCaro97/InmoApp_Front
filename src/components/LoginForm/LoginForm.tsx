@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { logging } from "../../utils/logging";
+import { logging } from "../../utils/auth/logging";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 

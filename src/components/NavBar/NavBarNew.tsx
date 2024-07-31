@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { isAuthenticated } from "../../utils/newAuth";
-import { logout } from "../../utils/newLogout";
+import { isAuthenticated } from "../../utils/auth/auth";
+import { logout } from "../../utils/auth/logout";
 import styles from "./navbar.module.css";
 
 // Componente Navbar:

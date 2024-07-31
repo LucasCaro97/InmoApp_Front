@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { isAuthenticated } from "../../utils/auth";
+import { isAuthenticated } from "../../utils/auth/auth";
 import "./styles.css";
 import deleteImage from "../../icons/delete.png";
 import editImage from "../../icons/edit.png";

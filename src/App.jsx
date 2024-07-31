@@ -15,7 +15,8 @@ import { ToastContainer } from "react-toastify";
 import LoginForm from "./components/LoginForm/LoginForm";
 import { OwnersView } from "./pages/OwnersView/OwnersView";
 import { EditOwner } from "./pages/EditOwner/EditOwner";
-import { RenterForm } from "./components/RenterForm/RenterForm";
+import { EditRenter } from "./pages/EditRenter/EditRenter";
+import { RentersView } from "./pages/RentersView/RentersView";
 function App() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -32,7 +33,8 @@ function App() {
           <Route path="/product-details/:id" element={<ProductDetails />} />
           <Route path="/propietario" element={<OwnersView />} />
           <Route path="/editarPropietario/:id" element={<EditOwner />} />
-          <Route path="/inquilino" element={<RenterForm />} />
+          <Route path="/inquilino" element={<RentersView />} />
+          <Route path="/editarInquilino/:id" element={<EditRenter />} />
           <Route
             path="/nuevoCaracteristica"
             element={
