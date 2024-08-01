@@ -46,12 +46,12 @@ span {
   display: flex;
   flex-direction: row;
 }
-img {
+.iconsRow img {
   filter: opacity(90%);
   margin: 2px;
   width: 18px;
   cursor: pointer;
 }
-img:hover {
+.iconsRow img:hover {
   filter: opacity(60%);
 }
