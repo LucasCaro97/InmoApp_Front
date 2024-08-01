@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { isAuthenticated } from "../../utils/newAuth";
-import { logout } from "../../utils/newLogout";
+import { isAuthenticated } from "../../utils/auth/auth";
+import { logout } from "../../utils/auth/logout";
 import styles from "./navbar.module.css";
 
 // Componente Navbar:
@@ -9,14 +9,16 @@ import styles from "./navbar.module.css";
 // Utiliza un event listener y un estado local para manejar el menú móvil
 
 const NavBarNew = (): JSX.Element => {
-  const screenBreakPoint = 767
+  const screenBreakPoint = 767;
   const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(window.innerWidth > screenBreakPoint);
+  const [menuOpen, setMenuOpen] = useState(
+    window.innerWidth > screenBreakPoint
+  );
   const isAuth = isAuthenticated();
   const [optionTitles, setOptionTitles] = useState({
     alquiler: "",
     venta: "",
-    parametros: "",
+    altas: "",
   });
 
   //La ventana escucha un evento Resize para cambiar entre menu movil y menu de escritorio.
@@ -110,18 +112,21 @@ const NavBarNew = (): JSX.Element => {
             </li>
             <li>
               <select
-                id="parametros-select"
-                name="parametros"
-                value={optionTitles.parametros}
+                id="altas-select"
+                name="altas"
+                value={optionTitles.altas}
                 onChange={handleSelectChange}
               >
-                <option value="">Parametros</option>
+                <option value="">Altas</option>
+                <option value="propietario">Propietario</option>
+                <option value="inquilino">Inquilino</option>
                 <option value="nuevoCaracteristica">Caracteristicas</option>
                 <option value="nuevoServicio">Servicios</option>
                 <option value="nuevoAmbiente">Ambientes</option>
                 <option value="nuevoCategoria">Categorias</option>
               </select>
             </li>
+            <li></li>
           </>
         ) : null}
       </ul>

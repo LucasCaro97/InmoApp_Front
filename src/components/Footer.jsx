@@ -2,7 +2,7 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <div className='flex justify-between bg-green-900'>
+    <div className='flex justify-between bg-green-900 ' >
         <div className=''>
             <img className='w-56 p-5' src="https://cdn.dribbble.com/users/5832433/screenshots/14499634/media/30823d8b7653c7d0e63965ae053dbf60.jpg" alt="Logo inmobiliaria" />
         </div>
