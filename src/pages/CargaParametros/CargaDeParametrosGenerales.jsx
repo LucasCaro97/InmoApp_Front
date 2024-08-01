@@ -121,7 +121,7 @@ const CargaDeParametrosGenerales = ({ tipoParametro }) => {
                     {parametro.nombre}
                   </td>
                   <td>
-                    <span>
+                    <span className="iconsRow">
                       <img
                         src={editImage}
                         onClick={() => handleEdit(parametro.id)}
