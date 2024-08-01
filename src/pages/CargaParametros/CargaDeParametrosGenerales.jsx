@@ -123,15 +123,15 @@ const CargaDeParametrosGenerales = ({ tipoParametro }) => {
                   <td>
                     <span className="iconsRow">
                       <img
-                        src={editImage}
-                        onClick={() => handleEdit(parametro.id)}
-                      />
-                      <img
                         src={deleteImage}
                         onClick={() => {
                           setOpenModal(true);
                           setParamToDelete(parametro.id);
                         }}
+                      />
+                      <img
+                        src={editImage}
+                        onClick={() => handleEdit(parametro.id)}
                       />
                     </span>
                   </td>

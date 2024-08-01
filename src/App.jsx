@@ -3,7 +3,7 @@ import { NavBarNew } from "./components/NavBar/NavBarNew";
 import Inicio from "./pages/Inicio";
 import SobreNosotros from "./pages/SobreNosotros";
 import SocialIcons from "./components/SocialIcons";
-import Footer from "./components/Footer";
+import Footer from "./components/Footer/Footer";
 import ProductDetails from "./pages/ProductDetails";
 import CargaDeParametrosGenerales from "./pages/CargaParametros/CargaDeParametrosGenerales";
 import CargaDeInmuebles from "./pages/CargaInmuebles/CargaDeInmuebles";
@@ -16,6 +16,7 @@ import { EditRenter } from "./pages/EditRenter/EditRenter";
 import { RentersView } from "./pages/RentersView/RentersView";
 import Venta from "./pages/Venta";
 import Alquiler from "./pages/Alquiler";
+import { ContractForm } from "./components/ContractForm/ContractForm";
 function App() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -47,7 +48,6 @@ function App() {
             path="/nuevoAmbiente"
             element={<CargaDeParametrosGenerales tipoParametro={"ambientes"} />}
           />
-
           <Route path="/alquilerNuevo" element={<CargaDeInmuebles />} />
           <Route path="/ventaNuevo" element={<CargaDeInmuebles />} />
           <Route path="/editarInmueble/:id" element={<CargaDeInmuebles />} />
@@ -56,6 +56,7 @@ function App() {
             element={<CargaDeParametrosGenerales tipoParametro={"categoria"} />}
           />
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/newContract" element={<ContractForm />} />.
         </Routes>
       </div>
       <Footer />
