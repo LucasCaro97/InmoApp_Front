@@ -52,12 +52,16 @@ const ContractForm = (): JSX.Element => {
       [name]: parseInt(selectedValue),
     });
   };
+  useEffect(() => {
+    if (new Date(newContract.fechaInicio) > new Date(newContract.fechaFin)) {
+      setError("ERROR");
+    } else {
+      setError("");
+    }
+  }, [newContract]);
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (new Date(newContract.fechaFin) < new Date(newContract.fechaInicio)) {
-      setError("La fecha de fin no puede ser anterior a la fecha de inicio.");
-    }
-    error ? toast.error(error) : alert("SUBMIT");
+    error.length > 0 ? toast.error(error) : toast.success("OK");
   };
   return (
     <>
