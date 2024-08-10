@@ -25,7 +25,7 @@ const ImageProductContainer = (props: Props) => {
         ];
 
   return (
-    <div className="relative w-full max-w-5xl mx-auto my-6">
+    <div className="relative w-full max-w-2xl mx-auto my-0">
       <div className="gallery relative z-10 mx-auto">
         <ImageGallery
           slideInterval={2000}
