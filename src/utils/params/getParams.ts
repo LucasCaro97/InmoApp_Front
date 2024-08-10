@@ -1,10 +1,11 @@
 import axios from "axios";
+import { getToken } from "../auth/localStorage";
 
-const token = localStorage.getItem("jwt");
+const token = getToken();
 const BASE_URL = import.meta.env.VITE_BASE_URL_API;
 const getParams = async (param: string) => {
   try {
-    const {data} = await axios.get(`${BASE_URL}/${param}`, {
+    const { data } = await axios.get(`${BASE_URL}/${param}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -15,4 +16,4 @@ const getParams = async (param: string) => {
     console.log(error);
   }
 };
-export {getParams}
+export { getParams };

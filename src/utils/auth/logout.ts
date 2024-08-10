@@ -1,6 +1,7 @@
 import { NavigateFunction } from "react-router-dom";
+import { deleteToken } from "./localStorage";
 const logout = (navigate: NavigateFunction) => {
-  localStorage.removeItem("jwt");
+  deleteToken();
   navigate("/login");
 };
 

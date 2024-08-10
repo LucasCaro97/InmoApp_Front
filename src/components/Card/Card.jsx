@@ -5,6 +5,7 @@ import { isAuthenticated } from "../../utils/auth/auth";
 import "./styles.css";
 import deleteImage from "../../icons/delete.png";
 import editImage from "../../icons/edit.png";
+import { getToken } from "../../utils/auth/localStorage";
 
 const Card = ({ id, title, imageUrl, description }) => {
   const BASE_URL_API = import.meta.env.VITE_BASE_URL_API;
@@ -16,7 +17,7 @@ const Card = ({ id, title, imageUrl, description }) => {
   };
 
   const handleDelete = async () => {
-    const token = localStorage.getItem("jwt");
+    const token = getToken();
     if (token) {
       try {
         const response = await axios.delete(`${BASE_URL_API}/inmueble/${id}`, {

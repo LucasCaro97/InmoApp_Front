@@ -1,14 +1,13 @@
-const isAuthenticated = () => {
-  const token = localStorage.getItem("jwt");
-  if (!token) {
-    return false;
-  }
+import { deleteToken, getToken } from "./localStorage";
 
+const isAuthenticated = () => {
+  const token = getToken();
+  if (!token) return false;
   const payload = JSON.parse(atob(token.split(".")[1]));
   const currentTime = Date.now() / 1000;
 
   if (payload.exp < currentTime) {
-    localStorage.removeItem("jwt");
+    deleteToken();
     return false;
   }
 

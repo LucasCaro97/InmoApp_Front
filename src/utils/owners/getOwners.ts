@@ -1,8 +1,9 @@
 import axios from "axios";
+import { getToken } from "../auth/localStorage";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL_API;
 const getOwners = async (): Promise<Array<Owner> | null> => {
-  const token = localStorage.getItem("jwt");
+  const token = getToken();
   try {
     const result = await axios.get(`${BASE_URL}/propietario`, {
       headers: {

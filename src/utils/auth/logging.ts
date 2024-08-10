@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { setToken } from "./localStorage";
 
 const BASE_URL_API = import.meta.env.VITE_BASE_URL_API;
 
@@ -20,14 +21,12 @@ const logging = async (email: string, password: string): Promise<Result> => {
       }
     );
     if (response.status === 200 && response.data.token) {
-      const token = response.data.token;
-      localStorage.setItem("jwt", token);
+      setToken(response.data.token);
       return { ok: true };
     } else {
       return { ok: false, message: "Error interno al inicar sesión" };
     }
   } catch (error) {
-    console.error(error);
     if (axios.isAxiosError(error) && error.response) {
       return {
         ok: false,

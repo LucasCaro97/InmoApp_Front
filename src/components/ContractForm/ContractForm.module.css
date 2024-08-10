@@ -31,7 +31,8 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-.formContainer textarea, .formContainer select{
+.formContainer textarea,
+.formContainer select {
   width: 100%;
 }
 .formContainer button {
