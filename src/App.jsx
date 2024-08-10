@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { NavBarNew } from "./components/NavBar/NavBarNew";
 import Inicio from "./pages/Inicio";
 import SobreNosotros from "./pages/SobreNosotros";
@@ -6,7 +6,6 @@ import SocialIcons from "./components/SocialIcons";
 import Footer from "./components/Footer/Footer";
 import ProductDetails from "./pages/ProductDetails";
 import CargaDeParametrosGenerales from "./pages/CargaParametros/CargaDeParametrosGenerales";
-import CargaDeInmuebles from "./pages/CargaInmuebles/CargaDeInmuebles";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import LoginForm from "./components/LoginForm/LoginForm";
@@ -17,6 +16,7 @@ import { RentersView } from "./pages/RentersView/RentersView";
 import Venta from "./pages/Venta";
 import Alquiler from "./pages/Alquiler";
 import { ContractForm } from "./components/ContractForm/ContractForm";
+import CargaDeInmuebles from "./pages/CargaInmuebles/CargaDeInmuebles";
 function App() {
   return (
     <div className="flex flex-col min-h-screen">

@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from "react";
 import Label1 from "../../components/Label1";
+import {
+  listaCaract,
+  listaServ,
+  listaAmb,
+  listaCat,
+  listaDeEstados,
+  listaPropietarios,
+} from "../../utils/getPropertyOptions";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import "./styles.css"
+import "./styles.css";
 const CargaDeInmuebles = () => {
   const { id } = useParams();
 
-  const [editMode, setEditMode] = useState(id !== undefined);
-  const [inmueble, setInmueble] = useState({});
+  const [editMode, setEditMode] = useState(false);
   const [listaDeCaracteristicas, setListaDeCaracteristicas] = useState([]);
   const [listaDeServicios, setListaDeServicios] = useState([]);
   const [listaDeAmbientes, setListaDeAmbientes] = useState([]);
   const [listaDeCategorias, setListaDeCategorias] = useState([]);
+  const [listaDePropietarios, setListaDePropietarios] = useState([]);
+  const [listaEstados, setListaDeEstados] = useState([]);
 
   const [nombre, setNombre] = useState("");
   const [direccion, setDireccion] = useState("");
@@ -27,17 +36,22 @@ const CargaDeInmuebles = () => {
   const [imagenesNew, setImagenesNew] = useState([]);
   const [esAlquiler, setEsAlquiler] = useState(false);
   const [esVenta, setEsVenta] = useState(false);
+  const [precioAlquiler, setPrecioAlquiler] = useState(0);
+  const [precioVenta, setPrecioVenta] = useState(0);
+  const [propietario, setPropietario] = useState(0);
+  const [estadoInmueble, setEstadoInmueble] = useState(0);
   const BASE_URL_API = import.meta.env.VITE_BASE_URL_API;
   const fetchData = async () => {
     const token = localStorage.getItem("jwt");
+
     if (token) {
       try {
-        if (editMode) {
+        if (id) {
           const inmuebleResponse = await axios.get(
             `${BASE_URL_API}/inmueble/${id}`
           );
           const inmuebleData = inmuebleResponse.data;
-          setInmueble(inmuebleData);
+          setPropietario(inmuebleData?.propietario.id);
           setNombre(inmuebleData.nombre);
           setDireccion(inmuebleData.direccion);
           setCiudad(inmuebleData.ciudad);
@@ -49,42 +63,31 @@ const CargaDeInmuebles = () => {
           setAmbientes(inmuebleData.ambientes?.map((a) => a.id));
           setEsAlquiler(inmuebleData.esAlquiler);
           setEsVenta(inmuebleData.esVenta);
+          setPrecioAlquiler(inmuebleData.precioAlquiler);
+          setPrecioVenta(inmuebleData.precioVenta);
+          setEstadoInmueble(inmuebleData.estadoInmueble.id);
           setImagenes(inmuebleData.listaImagenes);
+
+          setEditMode(true);
         }
-        const listaCaract = await axios.get(`${BASE_URL_API}/caracteristicas`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const listaServ = await axios.get(`${BASE_URL_API}/servicios`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const listaAmb = await axios.get(`${BASE_URL_API}/ambientes`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const listaCat = await axios.get(`${BASE_URL_API}/categoria`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        setListaDeCaracteristicas(listaCaract.data);
-        setListaDeServicios(listaServ.data);
-        setListaDeAmbientes(listaAmb.data);
-        setListaDeCategorias(listaCat.data);
+        const listaCaracteristicas = await listaCaract();
+        const listaServicios = await listaServ();
+        const listaAmbientes = await listaAmb();
+        const listaCategorias = await listaCat();
+        const listaEstadosInm = await listaDeEstados();
+        const lista_propietarios = await listaPropietarios();
+
+        setListaDeCaracteristicas(listaCaracteristicas);
+        setListaDeServicios(listaServicios);
+        setListaDeAmbientes(listaAmbientes);
+        setListaDeCategorias(listaCategorias);
+        setListaDePropietarios(lista_propietarios);
+        setListaDeEstados(listaEstadosInm);
       } catch (error) {
         console.log(error);
       }
     }
   };
-
   useEffect(() => {
     fetchData();
   }, []);
@@ -137,6 +140,22 @@ const CargaDeInmuebles = () => {
         ? prevAmbientes.filter((ambienteId) => ambienteId !== id)
         : [...prevAmbientes, id]
     );
+  };
+  const handleEstadoInmueble = (e) => {
+    const { value } = e.target;
+    setEstadoInmueble(Number(value));
+  };
+  const hanldePriceChange = (e) => {
+    const { name, value } = e.target;
+    const price = Number(value);
+    name === "precioAlquiler"
+      ? setPrecioAlquiler(price)
+      : setPrecioVenta(price);
+  };
+  const handlePropietario = (e) => {
+    const { value } = e.currentTarget;
+    const id = Number(value);
+    setPropietario(id);
   };
 
   const handleImagenesChange = (event) => {
@@ -195,6 +214,10 @@ const CargaDeInmuebles = () => {
     formData.append("categoria", categoria);
     formData.append("esAlquiler", esAlquiler);
     formData.append("esVenta", esVenta);
+    formData.append("precioAlquiler", precioAlquiler);
+    formData.append("precioVenta", precioVenta);
+    formData.append("propietario", propietario);
+    formData.append("estadoInmueble", estadoInmueble);
     caracteristicas.forEach((caracteristica) =>
       formData.append("caracteristicas", caracteristica)
     );
@@ -211,7 +234,6 @@ const CargaDeInmuebles = () => {
         if (editMode) {
           url += `/${id}`;
         }
-
         const response = await axios({
           method: method,
           url: url,
@@ -243,8 +265,7 @@ const CargaDeInmuebles = () => {
       }
     }
   };
-  console.log("ambientes!");
-  console.log(ambientes);
+
   return (
     <div>
       <div className="w-3/4 m-auto 2xl:px-36">
@@ -268,6 +289,29 @@ const CargaDeInmuebles = () => {
               id="nombreInmueble"
               required
             />
+          </div>
+          <div className="flex flex-col">
+            <label
+              htmlFor="propietario"
+              className="font-semibold text-base text-green-900"
+            >
+              Propietario:
+            </label>
+            <select
+              name="propietario"
+              id="propietario"
+              value={propietario || ""}
+              onChange={handlePropietario}
+            >
+              <option value="" disabled>
+                Seleccione un propietario
+              </option>
+              {listaDePropietarios.map((p) => (
+                <option value={p.id} key={p.id}>
+                  {p.nombreCompleto}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex flex-col">
             <label
@@ -313,7 +357,6 @@ const CargaDeInmuebles = () => {
               onChange={handleProvinciaChange}
               value={provincia}
               className="inputText"
-              // className="border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 w-full"
               id="provincia"
               required
             />
@@ -328,7 +371,8 @@ const CargaDeInmuebles = () => {
             <textarea
               onChange={handleDescripcionChange}
               value={descripcion}
-              rows="4" cols="50"
+              rows="4"
+              cols="50"
               className="inputText"
               id="descripcion"
             />
@@ -446,6 +490,50 @@ const CargaDeInmuebles = () => {
             </div>
           </div>
 
+          {estadoInmueble ? (
+            <div className="flex flex-col">
+              <label htmlFor="estadoInmueble">Estado del inmueble:</label>
+              <select
+                name="estadoInmueble"
+                id="estadoInmueble"
+                onChange={handleEstadoInmueble}
+                value={estadoInmueble}
+              >
+                {listaEstados.map((e) => (
+                  <option key={e.id + e.nombre} value={e.id}>
+                    {e.nombre}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ) : null}
+
+          <div className="flex flex-col">
+            <label htmlFor="precioAlquiler">Precio alquiler</label>
+            <input
+              type="number"
+              id="precioAlquiler"
+              className="inputText"
+              min={0}
+              step={0.1}
+              value={precioAlquiler}
+              name="precioAlquiler"
+              onChange={hanldePriceChange}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="precioVenta">Precio venta</label>
+            <input
+              type="number"
+              id="precioVenta"
+              className="inputText"
+              min={0}
+              step={0.1}
+              value={precioVenta}
+              name="precioVenta"
+              onChange={hanldePriceChange}
+            />
+          </div>
           <div className="flex flex-col col-span-full gap-2">
             <div className="flex gap-3">
               {imagenes?.map((item) => (

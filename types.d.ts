@@ -18,7 +18,10 @@ type Renter = {
   telefono: string;
   correo: string;
 };
-
+type Option = {
+  id: number;
+  nombre: string;
+};
 type Property = {
   id?: number;
   nombre: string;
@@ -26,13 +29,15 @@ type Property = {
   ciudad: string;
   provincia: string;
   descripcion: string;
-  categoria: number;
-  caracteristicas: Array<number>;
-  servicios: Array<number>;
-  ambientes: Array<number>;
+  categoria: Array;
+  caracteristicas: Array<Option>;
+  servicios: Array<Option>;
+  ambientes: Array<Option>;
   esVenta: boolean;
   esAlquiler: boolean;
-  imagenes: Array<string>;
+  precioAlquiler: number;
+  precioVenta: number;
+  listaImagenes: Array<File>;
 };
 
 type Contract = {
@@ -46,4 +51,9 @@ type Contract = {
   importeBase: number;
   indice: number;
   actualizaCada: number;
+};
+
+type ContractType = {
+  id: number;
+  nombre: string;
 };
