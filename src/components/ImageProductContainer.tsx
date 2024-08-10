@@ -25,8 +25,8 @@ const ImageProductContainer = (props: Props) => {
         ];
 
   return (
-    <div className="w-full max-w-5xl mx-auto my-6">
-      <div className="gallery mx-auto">
+    <div className="relative w-full max-w-5xl mx-auto my-6">
+      <div className="gallery relative z-10 mx-auto">
         <ImageGallery
           slideInterval={2000}
           slideDuration={1000}
@@ -34,7 +34,8 @@ const ImageProductContainer = (props: Props) => {
           showBullets={true}
           items={images}
           showFullscreenButton={true}
-          thumbnailPosition="bottom" // Cambio la posición de los thumbnails a la parte inferior
+          thumbnailPosition="bottom"
+          additionalClass="relative z-10"
         />
       </div>
     </div>

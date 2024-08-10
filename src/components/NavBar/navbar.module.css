@@ -8,8 +8,10 @@
   font-size: 18px;
   font-weight: 600;
   color: #033a11;
+  z-index: 999;
 }
 .navList {
+  z-index: 999;
   display: flex;
 }
 .navList a,
