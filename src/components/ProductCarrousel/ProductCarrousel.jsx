@@ -16,9 +16,7 @@ const ProductCarrousel = ({ datos }) => {
     if (window.innerWidth <= screenBreakPoints.small) {
       setSlidesToShow(1);
     } else if (window.innerWidth <= screenBreakPoints.medium) {
-      datos.length >= 2
-        ? setSlidesToShow(2)
-        : setSlidesToShow(datos.length);
+      datos.length >= 2 ? setSlidesToShow(2) : setSlidesToShow(datos.length);
     } else {
       setSlidesToShow(4);
     }
@@ -42,17 +40,19 @@ const ProductCarrousel = ({ datos }) => {
       {datos.length === 0 ? (
         <div>No existen inmuebles cargados</div>
       ) : (
-        <Slider {...settings}>
-          {datos.map((p, index) => (
-            <Card
-              key={p.id}
-              id={p.id}
-              title={p.nombre}
-              imageUrl={p.listaImagenes[0]}
-              description={p.descripcion}
-            />
-          ))}
-        </Slider>
+        <div>
+          <Slider {...settings}>
+            {datos.map((p, index) => (
+              <Card
+                key={p.id}
+                id={p.id}
+                title={p.nombre}
+                imageUrl={p.listaImagenes[0]}
+                description={p.descripcion}
+              />
+            ))}
+          </Slider>
+        </div>
       )}
     </div>
   );

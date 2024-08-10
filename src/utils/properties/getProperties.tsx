@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getToken } from "../auth/localStorage";
 type Response = {
   ok: boolean;
   data?: Array<Property>;
@@ -6,7 +7,7 @@ type Response = {
 };
 const getProperties = async (): Promise<Response> => {
   const BASE_URL = import.meta.env.VITE_BASE_URL_API;
-  const token = localStorage.getItem("jwt");
+  const token = getToken();
   try {
     const response = await axios.get(`${BASE_URL}/inmueble`, {
       headers: {

@@ -1,6 +1,7 @@
 import axios from "axios";
+import { getToken } from "../auth/localStorage";
 const BASE_URL = import.meta.env.VITE_BASE_URL_API;
-const token = localStorage.getItem("jwt");
+const token = getToken();
 type Response = {
   ok: boolean;
   message: string;

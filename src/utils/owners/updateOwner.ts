@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getToken } from "../auth/localStorage";
 type Result = {
   ok: boolean;
   message: string;
@@ -6,7 +7,7 @@ type Result = {
 const updateOwner = async (owner: Owner): Promise<Result> => {
   const BASE_URL = import.meta.env.VITE_BASE_URL_API;
   try {
-    const token = localStorage.getItem("jwt");
+    const token = getToken();
     const id = owner.id;
     const result = await axios.put(`${BASE_URL}/propietario/${id}`, owner, {
       headers: {

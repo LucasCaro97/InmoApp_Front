@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getToken } from "../auth/localStorage";
 type Result = {
   ok: boolean;
   message: string;
@@ -12,7 +13,7 @@ const saveNewParam = async (
   tipoParametro: string
 ): Promise<Result> => {
   const BASE_URL = import.meta.env.VITE_BASE_URL_API;
-  const token = localStorage.getItem("jwt");
+  const token = getToken();
   try {
     const response = await axios.post(
       `${BASE_URL}/${tipoParametro}`,

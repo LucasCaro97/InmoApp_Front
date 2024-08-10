@@ -1,22 +1,22 @@
-import { Route, Routes } from "react-router-dom";
-import { NavBarNew } from "./components/NavBar/NavBarNew";
+import "react-toastify/dist/ReactToastify.css";
 import Inicio from "./pages/Inicio";
 import SobreNosotros from "./pages/SobreNosotros";
 import SocialIcons from "./components/SocialIcons";
 import Footer from "./components/Footer/Footer";
-import ProductDetails from "./pages/ProductDetails";
 import CargaDeParametrosGenerales from "./pages/CargaParametros/CargaDeParametrosGenerales";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 import LoginForm from "./components/LoginForm/LoginForm";
+import Venta from "./pages/Venta";
+import Alquiler from "./pages/Alquiler";
+import CargaDeInmuebles from "./pages/CargaInmuebles/CargaDeInmuebles";
+import { Route, Routes } from "react-router-dom";
+import { NavBarNew } from "./components/NavBar/NavBarNew";
+import { PropertyDetail } from "./components/PropertyDetail/PropertyDetail";
+import { ToastContainer } from "react-toastify";
 import { OwnersView } from "./pages/OwnersView/OwnersView";
 import { EditOwner } from "./pages/EditOwner/EditOwner";
 import { EditRenter } from "./pages/EditRenter/EditRenter";
 import { RentersView } from "./pages/RentersView/RentersView";
-import Venta from "./pages/Venta";
-import Alquiler from "./pages/Alquiler";
 import { ContractForm } from "./components/ContractForm/ContractForm";
-import CargaDeInmuebles from "./pages/CargaInmuebles/CargaDeInmuebles";
 function App() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -29,7 +29,7 @@ function App() {
           <Route path="/sobre-nosotros" element={<SobreNosotros />} />
           <Route path="/venta" element={<Venta />} />
           <Route path="/alquiler" element={<Alquiler />} />
-          <Route path="/product-details/:id" element={<ProductDetails />} />
+          <Route path="/product-details/:id" element={<PropertyDetail />} />
           <Route path="/propietario" element={<OwnersView />} />
           <Route path="/editarPropietario/:id" element={<EditOwner />} />
           <Route path="/inquilino" element={<RentersView />} />

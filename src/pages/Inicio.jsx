@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from "react";
 import ProductCarrousel from "../components/ProductCarrousel/ProductCarrousel";
 import Label1 from "../components/Label1";
-import axios from "axios";
+import { getProperties } from "../utils/properties/getProperties";
+import { toast } from "react-toastify";
 const Inicio = () => {
-  const BASE_URL_API = import.meta.env.VITE_BASE_URL_API;
   const [inmuebles, setInmuebles] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL_API}/inmueble`);
-        if (Array.isArray(response.data)) {
-          setInmuebles(response.data);
-        }
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
+      const response = await getProperties();
+      if (response.ok) {
+        setInmuebles(response.data);
+      } else {
+        toast.error(response.message);
       }
     };
     fetchData();
@@ -39,11 +34,7 @@ const Inicio = () => {
 
       <section className="font-montserra mb-16">
         <Label1 className="text-center">Alquiler de Inmuebles</Label1>
-        {loading ? (
-          <div>Cargando...</div>
-        ) : (
-          <ProductCarrousel datos={inmueblesAlquiler} />
-        )}
+        <ProductCarrousel datos={inmueblesAlquiler} />
       </section>
 
       <section className="font-montserra mb-16">

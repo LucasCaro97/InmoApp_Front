@@ -1,6 +1,7 @@
 import axios from "axios";
+import { getToken } from "./auth/localStorage";
 const BASE_URL_API = import.meta.env.VITE_BASE_URL_API;
-const token = localStorage.getItem("jwt");
+const token = getToken();
 const listaCaract = async () => {
   const response = await axios.get(`${BASE_URL_API}/caracteristicas`, {
     headers: {

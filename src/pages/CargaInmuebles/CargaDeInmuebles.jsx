@@ -12,7 +12,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import "./styles.css";
+import { getToken } from "../../utils/auth/localStorage";
 const CargaDeInmuebles = () => {
+  const token = getToken();
   const { id } = useParams();
 
   const [editMode, setEditMode] = useState(false);
@@ -42,8 +44,6 @@ const CargaDeInmuebles = () => {
   const [estadoInmueble, setEstadoInmueble] = useState(0);
   const BASE_URL_API = import.meta.env.VITE_BASE_URL_API;
   const fetchData = async () => {
-    const token = localStorage.getItem("jwt");
-
     if (token) {
       try {
         if (id) {
@@ -165,7 +165,6 @@ const CargaDeInmuebles = () => {
   };
 
   const eliminarImagen = (nameImage) => {
-    const token = localStorage.getItem("jwt");
     if (token) {
       try {
         axios
@@ -225,7 +224,6 @@ const CargaDeInmuebles = () => {
     ambientes.forEach((ambiente) => formData.append("ambientes", ambiente));
     imagenesNew.forEach((imagen) => formData.append("imagenes", imagen));
 
-    const token = localStorage.getItem("jwt");
     if (token) {
       try {
         let url = `${BASE_URL_API}/inmueble`;
