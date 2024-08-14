@@ -1,9 +1,14 @@
-import { FormEvent, useEffect, useState } from "react";
-import { getProperties } from "../../utils/properties/getProperties";
-import { getRenters } from "../../utils/renters/getRenters";
-import styles from "./ContractForm.module.css";
 import { toast } from "react-toastify";
+import { ModalForm } from "../ModalForm/ModalForm";
+import { getRenters } from "../../utils/renters/getRenters";
+import { getIndexList } from "../../utils/indexs/getIndexsList";
+import { getProperties } from "../../utils/properties/getProperties";
 import { getContractTypes } from "../../utils/contractTypes/getContractTypes";
+import { createNewContract } from "../../utils/contract/createNewContract";
+import { validateContractForm } from "../../utils/validation/validateContractForm";
+import { FormEvent, useEffect, useState } from "react";
+import styles from "./ContractForm.module.css";
+
 const ContractForm = (): JSX.Element => {
   const initialState: Contract = {
     inmuebleId: 0,
@@ -21,35 +26,38 @@ const ContractForm = (): JSX.Element => {
   const [newContract, setNewContract] = useState<Contract>(initialState);
   const [propertiesList, setPropertiesList] = useState<Array<Property>>();
   const [rentersList, setRentersList] = useState<Array<Renter>>();
-  const [error, setError] = useState<string>("");
-  const [amount, setAmount] = useState(0);
-  const [contractTypes, setNewContractTypes] = useState<Array<ContractType>>([
-    { id: 1, nombre: "locación" },
-    { id: 2, nombre: "comodato" },
-  ]);
-
+  const [selectedValue, setSelectedValue] = useState<number>(0);
+  const [contractTypes, setNewContractTypes] = useState<Array<ContractType>>();
+  const [indexs, setIndexs] = useState<Array<Index>>([]);
+  const [openForm, setOpenForm] = useState<boolean>(false);
+  const [endpoint, setEndPoint] = useState<string>("");
   useEffect(() => {
     const loadValues = async () => {
       const properties = await getProperties();
       const alquileres = properties.data?.filter((p) => p.esAlquiler);
       const renters = await getRenters();
-      const result = await getContractTypes();
-      if (result.ok && result.data?.length) {
-        setNewContractTypes(result.data);
+      const contractTypeList = await getContractTypes();
+      const indexList = await getIndexList();
+
+      if (contractTypeList.ok && contractTypeList.data?.length) {
+        setNewContractTypes(contractTypeList.data);
       }
       if (properties.ok && renters) {
         setPropertiesList(alquileres);
         setRentersList(renters);
       }
+      if (indexList.ok && indexList.data) {
+        setIndexs(indexList.data);
+      }
     };
     loadValues();
-  }, []);
+  }, [openForm]);
 
   const handleInputChange = (
     e: FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.currentTarget;
-    name === "actualizaCada"
+    name === "actualizaCada" || name === "importeBase"
       ? setNewContract({
           ...newContract,
           [name]: Number(value),
@@ -63,44 +71,53 @@ const ContractForm = (): JSX.Element => {
   const handleSelectChange = (e: FormEvent<HTMLSelectElement>) => {
     const selectedValue: string = e.currentTarget.value;
     const name = e.currentTarget.name;
-
-    if (name === "inmuebleId" || name === "inquilinoId") {
+    if (
+      name === "inmuebleId" ||
+      name === "inquilinoId" ||
+      name === "tipoContratoId"
+    ) {
       setNewContract({
         ...newContract,
-        [name]: parseInt(selectedValue),
+        [name]: Number(selectedValue),
+      });
+    } else {
+      setNewContract({
+        ...newContract,
+        [name]: selectedValue,
       });
     }
-    setNewContract({
-      ...newContract,
-      [name]: selectedValue,
-    });
+  };
+  const handleOpenForm = (endpoint: string) => {
+    setOpenForm(true);
+    setEndPoint(endpoint);
   };
 
   useEffect(() => {
-    if (new Date(newContract.fechaInicio) > new Date(newContract.fechaFin)) {
-      setError("ERROR");
-    } else {
-      setError("");
-    }
-    const getAmount = () => {
-      const selectedProp = propertiesList
-        ?.filter((p) => p.id === Number(newContract.inmuebleId))
-        .pop();
-      if (selectedProp) {
-        setAmount(selectedProp.precioAlquiler);
-      }
-    };
-    getAmount();
+    const selectedProp = propertiesList
+      ?.filter((p) => p.id === newContract.inmuebleId)
+      .pop();
+    if (selectedProp) setSelectedValue(selectedProp?.precioAlquiler);
   }, [newContract]);
+  useEffect(() => {
+    setNewContract({ ...newContract, importeBase: selectedValue });
+  }, [selectedValue]);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(newContract);
-    error.length > 0 ? toast.error(error) : toast.success("OK");
+    const validate = validateContractForm(newContract);
+    if (validate.ok) {
+      const resul = await createNewContract(newContract);
+      resul.ok ? toast.success(resul.message) : toast.error(resul.message);
+    } else {
+      toast.error(validate.message);
+    }
   };
-
   return (
     <>
+      {openForm ? (
+        <ModalForm endpoint={endpoint} setOpenForm={setOpenForm} />
+      ) : null}
+
       <h3 className={styles.title}>Nuevo contrato</h3>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
         <label htmlFor="inmuebleId">Inmueble</label>
@@ -110,9 +127,7 @@ const ContractForm = (): JSX.Element => {
           id="inmuebleId"
           value={newContract.inmuebleId}
         >
-          <option value="" disabled>
-            Seleccione un inmueble
-          </option>
+          <option value="">Seleccione un inmueble</option>
           {propertiesList?.map((p, i) => (
             <option key={p.nombre + i} value={p.id}>
               {p.nombre}
@@ -127,9 +142,7 @@ const ContractForm = (): JSX.Element => {
           id="inquilinoId"
           value={newContract.inquilinoId}
         >
-          <option value="" disabled>
-            Seleccione un inquilino
-          </option>
+          <option value="">Seleccione un inquilino</option>
           {rentersList?.map((inq, i) => (
             <option key={inq.nombreCompleto + i} value={inq.id}>
               {inq.nombreCompleto}
@@ -137,22 +150,31 @@ const ContractForm = (): JSX.Element => {
           ))}
         </select>
 
-        <label htmlFor="tipoContratoId">Tipo de contrato</label>
-        <select
-          onChange={handleSelectChange}
-          name="tipoContratoId"
-          id="tipoContratoId"
-          value={newContract.tipoContratoId}
-        >
-          <option value="" disabled>
-            Seleccione un tipo de contrato
-          </option>
-          {contractTypes.map((c, i) => (
-            <option key={i} value={i}>
-              {c && c.nombre[0].toLocaleUpperCase() + c.nombre.slice(1)}
-            </option>
-          ))}
-        </select>
+        <div className={styles.section}>
+          <div>
+            <label htmlFor="tipoContratoId">Tipo de contrato</label>
+            <select
+              onChange={handleSelectChange}
+              name="tipoContratoId"
+              id="tipoContratoId"
+              value={newContract.tipoContratoId}
+            >
+              <option value="">Seleccione un tipo de contrato</option>
+              {contractTypes?.map((c, i) => (
+                <option key={i} value={c.id}>
+                  {c && c.nombre[0].toLocaleUpperCase() + c.nombre.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
+          <span
+            onClick={() => {
+              handleOpenForm("tipocontrato");
+            }}
+          >
+            +
+          </span>
+        </div>
 
         <label htmlFor="indexSelect">Indice:</label>
         <select
@@ -161,12 +183,12 @@ const ContractForm = (): JSX.Element => {
           value={newContract.indice}
           onChange={handleSelectChange}
         >
-          <option value="" disabled>
-            Seleccione un índice
-          </option>
-          <option value="ipc">IPC</option>
-          <option value="icl">ICL</option>
-          <option value="casa_propia">Casa propia</option>
+          <option value="">Seleccione un índice</option>
+          {indexs.map((index, i) => (
+            <option key={index.nombre + i} value={index.id}>
+              {index.nombre}
+            </option>
+          ))}
         </select>
 
         <label htmlFor="fechaInicio">Fecha de inicio</label>
@@ -187,6 +209,18 @@ const ContractForm = (): JSX.Element => {
           value={newContract.fechaFin}
         />
 
+        <label htmlFor="importeBase">Precio base:</label>
+        <input
+          type="number"
+          min={0}
+          step={0.1}
+          placeholder="$"
+          onChange={handleInputChange}
+          name="importeBase"
+          id="importeBase"
+          value={newContract.importeBase || selectedValue}
+        />
+
         <label htmlFor="actualizaCada">Actualiza cada:</label>
         <input
           type="number"
@@ -197,16 +231,6 @@ const ContractForm = (): JSX.Element => {
           placeholder="1, 2, 3...(Meses)"
           onChange={handleInputChange}
           value={newContract.actualizaCada}
-        />
-
-        <label htmlFor="importeBase">Importe base:</label>
-        <input
-          type="number"
-          id="importeBase"
-          name="importeBase"
-          min={0}
-          value={amount}
-          onChange={handleInputChange}
         />
 
         <label htmlFor="observaciones">Observaciones</label>

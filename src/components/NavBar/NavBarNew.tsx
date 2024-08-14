@@ -124,6 +124,7 @@ const NavBarNew = (): JSX.Element => {
                 <option value="nuevoServicio">Servicios</option>
                 <option value="nuevoAmbiente">Ambientes</option>
                 <option value="nuevoCategoria">Categorias</option>
+                <option value="nuevoContrato">Contrato</option>
               </select>
             </li>
             <li></li>

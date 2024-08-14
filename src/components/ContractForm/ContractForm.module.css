@@ -50,3 +50,18 @@
 .formContainer button:hover {
   background-color: #1e8a49;
 }
+.section {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+.section div {
+  width: 100%;
+}
+.section span {
+  font-weight: 800;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 20px;
+}

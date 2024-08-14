@@ -56,7 +56,7 @@ function App() {
             element={<CargaDeParametrosGenerales tipoParametro={"categoria"} />}
           />
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/newContract" element={<ContractForm />} />.
+          <Route path="/nuevoContrato" element={<ContractForm />} />.
         </Routes>
       </div>
       <Footer />
