@@ -18,10 +18,12 @@ type Renter = {
   telefono: string;
   correo: string;
 };
+
 type Option = {
   id: number;
   nombre: string;
 };
+
 type Property = {
   id?: number;
   nombre: string;
@@ -51,6 +53,11 @@ type Contract = {
   importeBase: number;
   indice: number;
   actualizaCada: number;
+};
+
+type Index = {
+  id: number;
+  nombre: string;
 };
 
 type ContractType = {

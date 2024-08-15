@@ -1,5 +1,5 @@
 .formContainer {
-  max-width: 500px;
+  max-width: 800px;
   min-width: 300px;
   margin: 0 auto;
   padding: 10px;
@@ -41,7 +41,7 @@
   padding: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #14532d;
+  background-color: #14532dbe;
   color: #f1f1f1;
   font-weight: 600;
   cursor: pointer;
@@ -49,4 +49,19 @@
 
 .formContainer button:hover {
   background-color: #1e8a49;
+}
+.section {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+.section div {
+  width: 100%;
+}
+.section span {
+  font-weight: 800;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 20px;
 }

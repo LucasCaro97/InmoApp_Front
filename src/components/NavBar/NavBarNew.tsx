@@ -93,7 +93,9 @@ const NavBarNew = (): JSX.Element => {
                 value={optionTitles.alquiler}
                 onChange={handleSelectChange}
               >
-                <option value="">Alquiler</option>
+                <option value="" disabled>
+                  Alquiler
+                </option>
                 <option value="alquiler">Todos</option>
                 <option value="alquilerNuevo">Nuevo</option>
               </select>
@@ -105,7 +107,9 @@ const NavBarNew = (): JSX.Element => {
                 value={optionTitles.venta}
                 onChange={handleSelectChange}
               >
-                <option value="">Venta</option>
+                <option value="" disabled>
+                  Venta
+                </option>
                 <option value="venta">Todos</option>
                 <option value="ventaNuevo">Nuevo</option>
               </select>
@@ -117,16 +121,18 @@ const NavBarNew = (): JSX.Element => {
                 value={optionTitles.altas}
                 onChange={handleSelectChange}
               >
-                <option value="">Altas</option>
+                <option value="" disabled>
+                  Altas
+                </option>
                 <option value="propietario">Propietario</option>
                 <option value="inquilino">Inquilino</option>
                 <option value="nuevoCaracteristica">Caracteristicas</option>
                 <option value="nuevoServicio">Servicios</option>
                 <option value="nuevoAmbiente">Ambientes</option>
                 <option value="nuevoCategoria">Categorias</option>
+                <option value="nuevoContrato">Contratos</option>
               </select>
             </li>
-            <li></li>
           </>
         ) : null}
       </ul>
