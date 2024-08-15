@@ -17,8 +17,8 @@ const RentersView = (): JSX.Element => {
       >
         {openForm ? "Cerrar formulario" : "Nuevo Inquilino"}
       </button>
-      {openForm ? <RenterForm /> : null}
-      <RentersTable />
+      {openForm ? <RenterForm setOpenForm = {setOpenForm} /> : null}
+      <RentersTable openForm={openForm} />
     </div>
   );
 };

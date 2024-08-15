@@ -7,7 +7,10 @@ import "./styles.css";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { ModalConfirm } from "../ModalConfirm/ModalConfirm";
-const OwnersTable = (): JSX.Element => {
+type Props = {
+  openForm: boolean
+}
+const OwnersTable = ({openForm}: Props): JSX.Element => {
   const navigate = useNavigate();
   const [owners, setOwners] = useState<Array<Owner>>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -20,7 +23,7 @@ const OwnersTable = (): JSX.Element => {
       }
     };
     loadOwners();
-  }, []);
+  }, [openForm]);
   const handleDelete = async (id: number | undefined) => {
     if (id) {
       setOwnerToDelete(id);

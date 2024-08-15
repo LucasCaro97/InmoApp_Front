@@ -4,10 +4,13 @@ import deleteImage from "../../icons/delete.png";
 import editImage from "../../icons/edit.png";
 import { deleteRenter } from "../../utils/renters/deleteRenter";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ModalConfirm } from "../ModalConfirm/ModalConfirm";
 import "./styles.css";
-const RentersTable = (): JSX.Element => {
+type Props = {
+  openForm : boolean
+}
+const RentersTable = ({openForm } : Props ): JSX.Element => {
   const navigate = useNavigate();
   const [renters, setRenters] = useState<Array<Renter>>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -20,7 +23,7 @@ const RentersTable = (): JSX.Element => {
       }
     };
     loadOwners();
-  }, []);
+  }, [openForm]);
   const handleDelete = async (id: number | undefined) => {
     if (id) {
       setRenterToDelete(id);

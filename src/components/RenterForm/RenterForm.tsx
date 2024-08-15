@@ -2,12 +2,11 @@ import { useState, FormEvent } from "react";
 import styles from "./RenterForm.module.css";
 import { toast } from "react-toastify";
 import { saveNewRenter } from "../../utils/renters/saveNewRenter";
-const RenterForm = (): JSX.Element => {
-  //   String nombreCompleto;
-  // String dni;
-  // String cuil
-  // String telefono
-  // String correo
+import { validateRenter } from "../../utils/validation/validateRenter";
+type Props = {
+  setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
+};
+const RenterForm = ({ setOpenForm }: Props): JSX.Element => {
   const initialState: Renter = {
     nombreCompleto: "",
     dni: "",
@@ -25,10 +24,16 @@ const RenterForm = (): JSX.Element => {
   };
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const validate = validateRenter(newRenter);
+    if (!validate.ok && validate.message) {
+      toast.error(validate.message);
+      return;
+    }
     const result = await saveNewRenter(newRenter);
     if (result.ok) {
       setNewRenter(initialState);
       toast.success(result.message);
+      setOpenForm(false);
     } else {
       toast.error(result.message);
     }

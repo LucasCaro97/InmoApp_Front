@@ -23,12 +23,11 @@ const CargaDeParametrosGenerales = ({ tipoParametro }) => {
       setParametros(result);
     };
     fetchData();
-  }, [tipoParametro]);
+  }, [newParam, editMode]);
 
   const handleEdit = (id) => {
     setOpenEditForm(!openEditForm);
     const param = parametros.filter((p) => p.id === id);
-    console.log(param[0]);
     setParamToEdit(param[0]);
     !editMode && setEditMode(true);
   };
@@ -36,26 +35,28 @@ const CargaDeParametrosGenerales = ({ tipoParametro }) => {
     if (paramToDelete !== undefined) {
       const result = await deleteParam(paramToDelete, tipoParametro);
       if (result.ok) {
+        const newList = parametros.filter((p) => p.id !== paramToDelete);
+        setParametros(newList);
         toast.success(result.message);
       } else {
         toast.error(result.message);
       }
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (editMode) {
       const result = await updateParam(paramToEdit, tipoParametro);
       if (result.ok) {
+        setEditMode(false);
         toast.success(result.message);
       } else {
         toast.error(result.message);
       }
     } else {
-      console.log(newParam);
       const result = await saveNewParam(newParam, tipoParametro);
       if (result.ok) {
+        setNewParam("");
         toast.success(result.message);
       } else {
         toast.error(result.message);

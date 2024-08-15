@@ -17,8 +17,8 @@ const OwnersView = (): JSX.Element => {
       >
         {openForm ? "Cerrar formulario" : "Nuevo Propietario"}
       </button>
-      {openForm ? <OwnerForm /> : null}
-      <OwnersTable />
+      {openForm ? <OwnerForm setOpenForm = {setOpenForm}/> : null}
+      <OwnersTable openForm = {openForm}/>
     </div>
   );
 };
