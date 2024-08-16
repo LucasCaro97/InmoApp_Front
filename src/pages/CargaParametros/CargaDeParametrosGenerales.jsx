@@ -23,7 +23,8 @@ const CargaDeParametrosGenerales = ({ tipoParametro }) => {
       setParametros(result);
     };
     fetchData();
-  }, [newParam, editMode]);
+    setOpenEditForm(false)
+  }, [newParam, editMode, tipoParametro]);
 
   const handleEdit = (id) => {
     setOpenEditForm(!openEditForm);
