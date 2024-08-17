@@ -5,27 +5,55 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
-  color: #033a11;
+  color: #ffffff;
+  background-color: #2c3e50;
+  border-bottom: 1px solid #1abc9c;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 999;
 }
+
 .navList {
   z-index: 999;
   display: flex;
 }
+
 .navList a,
 .navbar select {
   cursor: pointer;
   margin-right: 20px;
+  color: #ecf0f1;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #2c3e50;
 }
-.navList a :hover {
-  text-decoration: underline;
+.navbar select {
+  border: 1px solid #34495e;
+}
+.navbar option {
+  color: #f1f1f1;
+  background-color: #2c3e50;
+  padding: 10px;
+  font-size: 18px;
+}
+.navList a:hover,
+.navbar select:hover {
+  background-color: #34495e;
+}
+
+.navbar select {
+  appearance: none; /* Elimina el estilo por defecto del select */
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 @media screen and (max-width: 767px) {
   .navbar {
     justify-content: space-between;
+    padding: 10px;
   }
   .navList {
     position: absolute;
@@ -35,14 +63,17 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    background-color: #f1f1f1;
+    background-color: #2c3e50;
     padding: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para pop-up en móviles */
   }
   .navList a,
   .navList select {
-    background-color: #f1f1f1;
+    background-color: #34495e;
+    color: #ecf0f1;
     width: 80vw;
     margin-right: 0;
     padding: 10px;
+    border-radius: 4px; /* Bordes redondeados */
   }
 }
