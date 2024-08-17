@@ -1,7 +1,6 @@
 import "react-toastify/dist/ReactToastify.css";
 import Inicio from "./pages/Inicio";
 import SobreNosotros from "./pages/SobreNosotros";
-import SocialIcons from "./components/SocialIcons";
 import Footer from "./components/Footer/Footer";
 import CargaDeParametrosGenerales from "./pages/CargaParametros/CargaDeParametrosGenerales";
 import LoginForm from "./components/LoginForm/LoginForm";
@@ -9,7 +8,7 @@ import Venta from "./pages/Venta";
 import Alquiler from "./pages/Alquiler";
 import CargaDeInmuebles from "./pages/CargaInmuebles/CargaDeInmuebles";
 import { Route, Routes } from "react-router-dom";
-import { NavBarNew } from "./components/NavBar/NavBarNew";
+import { NavBar } from "./components/NavBar/NavBar";
 import { PropertyDetail } from "./components/PropertyDetail/PropertyDetail";
 import { ToastContainer } from "react-toastify";
 import { OwnersView } from "./pages/OwnersView/OwnersView";
@@ -17,13 +16,14 @@ import { EditOwner } from "./pages/EditOwner/EditOwner";
 import { EditRenter } from "./pages/EditRenter/EditRenter";
 import { RentersView } from "./pages/RentersView/RentersView";
 import { ContractForm } from "./components/ContractForm/ContractForm";
+
+import { Report } from "./components/Report/Report";
 function App() {
   return (
     <div className="flex flex-col min-h-screen">
-      <SocialIcons />
       <ToastContainer />
       <div className="flex-grow">
-        <NavBarNew />
+        <NavBar />
         <Routes>
           <Route path="/" element={<Inicio />} />
           <Route path="/sobre-nosotros" element={<SobreNosotros />} />
@@ -48,15 +48,15 @@ function App() {
             path="/nuevoAmbiente"
             element={<CargaDeParametrosGenerales tipoParametro={"ambientes"} />}
           />
-          <Route path="/alquilerNuevo" element={<CargaDeInmuebles />} />
-          <Route path="/ventaNuevo" element={<CargaDeInmuebles />} />
+          <Route path="/nuevo-inmueble" element={<CargaDeInmuebles />} />
           <Route path="/editarInmueble/:id" element={<CargaDeInmuebles />} />
           <Route
             path="/nuevoCategoria"
             element={<CargaDeParametrosGenerales tipoParametro={"categoria"} />}
           />
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/nuevoContrato" element={<ContractForm />} />.
+          <Route path="/nuevoContrato" element={<ContractForm />} />
+          <Route path="/reporte" element={<Report />} />
         </Routes>
       </div>
       <Footer />

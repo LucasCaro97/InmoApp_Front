@@ -23,11 +23,14 @@ const CargaDeParametrosGenerales = ({ tipoParametro }) => {
       setParametros(result);
     };
     fetchData();
-  }, [newParam, editMode]);
+  }, [newParam, editMode, tipoParametro]);
 
+  useEffect(() => {
+    setOpenEditForm(false);
+  }, [tipoParametro]);
   const handleEdit = (id) => {
     setOpenEditForm(!openEditForm);
-    const param = parametros.filter((p) => p.id === id);
+    const param = parametros?.filter((p) => p.id === id);
     setParamToEdit(param[0]);
     !editMode && setEditMode(true);
   };
@@ -35,7 +38,7 @@ const CargaDeParametrosGenerales = ({ tipoParametro }) => {
     if (paramToDelete !== undefined) {
       const result = await deleteParam(paramToDelete, tipoParametro);
       if (result.ok) {
-        const newList = parametros.filter((p) => p.id !== paramToDelete);
+        const newList = parametros?.filter((p) => p.id !== paramToDelete);
         setParametros(newList);
         toast.success(result.message);
       } else {
@@ -97,7 +100,7 @@ const CargaDeParametrosGenerales = ({ tipoParametro }) => {
             </button>
           </form>
         )}
-        {parametros.length > 0 ? (
+        {parametros?.length > 0 ? (
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
@@ -110,7 +113,7 @@ const CargaDeParametrosGenerales = ({ tipoParametro }) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {parametros.map((parametro, index) => (
+              {parametros?.map((parametro, index) => (
                 <tr
                   key={parametro.id}
                   className={index % 2 === 0 ? "bg-white" : "bg-gray-300"}

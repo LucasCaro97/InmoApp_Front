@@ -1,14 +1,14 @@
-import { ChangeEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { isAuthenticated } from "../../utils/auth/auth";
 import { logout } from "../../utils/auth/logout";
+import { isAuthenticated } from "../../utils/auth/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { ChangeEvent, useState } from "react";
 import styles from "./navbar.module.css";
 
 // Componente Navbar:
 // Continene los links a Inicio y Acerca de, así como dropdowns de Alquiler, Venta y Parámetros.
 // Utiliza un event listener y un estado local para manejar el menú móvil
 
-const NavBarNew = (): JSX.Element => {
+const NavBar = (): JSX.Element => {
   const screenBreakPoint = 767;
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(
@@ -16,9 +16,10 @@ const NavBarNew = (): JSX.Element => {
   );
   const isAuth = isAuthenticated();
   const [optionTitles, setOptionTitles] = useState({
-    alquiler: "",
-    venta: "",
-    altas: "",
+    inmueble: "",
+    clientes: "",
+    parametros: "",
+    gestion: "",
   });
 
   //La ventana escucha un evento Resize para cambiar entre menu movil y menu de escritorio.
@@ -84,53 +85,66 @@ const NavBarNew = (): JSX.Element => {
         <Link to="/sobre-nosotros" onClick={handleNavigate}>
           <li>Acerca de</li>
         </Link>
+
         {isAuth ? (
           <>
             <li>
               <select
-                id="alquiler-select"
-                name="alquiler"
-                value={optionTitles.alquiler}
+                id="inmueble-select"
+                name="inmueble"
                 onChange={handleSelectChange}
+                value={optionTitles.inmueble}
               >
                 <option value="" disabled>
-                  Alquiler
+                  Inmuebles
                 </option>
-                <option value="alquiler">Todos</option>
-                <option value="alquilerNuevo">Nuevo</option>
+                <option value="alquiler">Alquiler</option>
+                <option value="venta">Venta</option>
+                <option value="nuevo-inmueble">Nuevo</option>
               </select>
             </li>
             <li>
               <select
-                id="venta-select"
-                name="venta"
-                value={optionTitles.venta}
+                id="clientes-select"
+                name="clientes"
                 onChange={handleSelectChange}
+                value={optionTitles.clientes}
               >
                 <option value="" disabled>
-                  Venta
+                  Clientes
                 </option>
-                <option value="venta">Todos</option>
-                <option value="ventaNuevo">Nuevo</option>
+                <option value="propietario">Propietarios</option>
+                <option value="inquilino">Inquilinos</option>
               </select>
             </li>
             <li>
               <select
-                id="altas-select"
-                name="altas"
-                value={optionTitles.altas}
+                id="parametros-select"
+                name="parametros"
                 onChange={handleSelectChange}
+                value={optionTitles.parametros}
               >
                 <option value="" disabled>
-                  Altas
+                  Parámetros
                 </option>
-                <option value="propietario">Propietario</option>
-                <option value="inquilino">Inquilino</option>
                 <option value="nuevoCaracteristica">Caracteristicas</option>
                 <option value="nuevoServicio">Servicios</option>
                 <option value="nuevoAmbiente">Ambientes</option>
                 <option value="nuevoCategoria">Categorias</option>
+              </select>
+            </li>
+            <li>
+              <select
+                id="gestion-select"
+                name="gestion"
+                value={optionTitles.gestion}
+                onChange={handleSelectChange}
+              >
+                <option value="" disabled>
+                  Gestión
+                </option>
                 <option value="nuevoContrato">Contratos</option>
+                <option value="reporte">Reporte</option>
               </select>
             </li>
           </>
@@ -138,21 +152,21 @@ const NavBarNew = (): JSX.Element => {
       </ul>
       {isAuth ? (
         <button
-          className="mr-10 h-8 w-32 bg-green-700 text-white rounded-xl text-base"
+          className="mr-10 h-8 w-32 bg-teal-600 text-white rounded-lg text-base shadow-md hover:bg-teal-500 transition-all duration-300 ease-in-out"
           onClick={handleLogOut}
         >
-          Cerrar Sesion
+          Cerrar Sesión
         </button>
       ) : (
         <button
-          className="mr-10 h-8 w-32 bg-green-700 text-white rounded-xl text-base"
+          className="mr-10 h-8 w-32 bg-teal-600 text-white rounded-lg text-base shadow-md hover:bg-teal-500 transition-all duration-300 ease-in-out"
           onClick={handleLogin}
         >
-          Iniciar Sesion
+          Iniciar Sesión
         </button>
       )}
     </nav>
   );
 };
 
-export { NavBarNew };
+export { NavBar };
