@@ -19,6 +19,10 @@ type Renter = {
   correo: string;
 };
 
+type Parameter = {
+  id: number;
+  nombre: string;
+};
 type Option = {
   id: number;
   nombre: string;

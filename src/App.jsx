@@ -16,6 +16,7 @@ import { EditOwner } from "./pages/EditOwner/EditOwner";
 import { EditRenter } from "./pages/EditRenter/EditRenter";
 import { RentersView } from "./pages/RentersView/RentersView";
 import { ContractForm } from "./components/ContractForm/ContractForm";
+import "./App.css"
 
 import { Report } from "./components/Report/Report";
 function App() {
