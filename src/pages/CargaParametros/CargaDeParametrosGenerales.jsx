@@ -1,19 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getParams } from "../../utils/params/getParams";
+import { MyContext } from "../../store/Provider";
 import { ModalConfirm } from "../../components/ModalConfirm/ModalConfirm";
 import { deleteParam } from "../../utils/params/deleteParam";
 import { updateParam } from "../../utils/params/updateParam";
 import { saveNewParam } from "../../utils/params/saveNewParam";
-import editImage from "../../icons/edit.png";
 import deleteImage from "../../icons/delete.png";
-
-import { MyContext } from "../../store/Provider";
+import editImage from "../../icons/edit.png";
 import "./styles.css";
 const CargaDeParametrosGenerales = ({ tipoParametro }) => {
   const context = useContext(MyContext);
   const { parameters } = context.state;
-  const {saveParameters} = context;
+  const { saveParameters, filterParameters } = context;
   const [openEditForm, setOpenEditForm] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -21,11 +20,11 @@ const CargaDeParametrosGenerales = ({ tipoParametro }) => {
   const [newParam, setNewParam] = useState("");
   const [paramToDelete, setParamToDelete] = useState();
 
+  const fetchData = async () => {
+    const result = await getParams(tipoParametro);
+    saveParameters(result);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await getParams(tipoParametro);
-      saveParameters(result);
-    };
     fetchData();
   }, [newParam, editMode, tipoParametro]);
 
@@ -78,6 +77,14 @@ const CargaDeParametrosGenerales = ({ tipoParametro }) => {
       setNewParam(value);
     }
   };
+  const handleSearchInput = (e) => {
+    const { value } = e.target;
+    if (value.length) {
+      filterParameters(value);
+    } else {
+      fetchData();
+    }
+  };
   return (
     <>
       <div className="container mx-auto mb-4">
@@ -104,6 +111,16 @@ const CargaDeParametrosGenerales = ({ tipoParametro }) => {
             </button>
           </form>
         )}
+
+        <div>
+          <label htmlFor="inputSearch">Buscar:</label>
+          <input
+            type="text"
+            name="inputSearch"
+            id="inputSearch"
+            onInput={handleSearchInput}
+          />
+        </div>
         {parameters?.length > 0 ? (
           <table className="table-auto w-full border-collapse border border-gray-300">
             <thead>

@@ -15,8 +15,9 @@ import { OwnersView } from "./pages/OwnersView/OwnersView";
 import { EditOwner } from "./pages/EditOwner/EditOwner";
 import { EditRenter } from "./pages/EditRenter/EditRenter";
 import { RentersView } from "./pages/RentersView/RentersView";
+import { ContractsView } from "./pages/ContractsView/ContractsView";
 import { ContractForm } from "./components/ContractForm/ContractForm";
-import "./App.css"
+import "./App.css";
 
 import { Report } from "./components/Report/Report";
 function App() {
@@ -56,7 +57,9 @@ function App() {
             element={<CargaDeParametrosGenerales tipoParametro={"categoria"} />}
           />
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/nuevoContrato" element={<ContractForm />} />
+          <Route path="/contratos" element={<ContractsView />} />
+          <Route path="/formulario-contrato" element={<ContractForm />} />
+          <Route path="/formulario-contrato/:id" element={<ContractForm />} />
           <Route path="/reporte" element={<Report />} />
         </Routes>
       </div>

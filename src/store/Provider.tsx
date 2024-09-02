@@ -14,6 +14,9 @@ interface GlobalContextProps {
   saveParameters: (parameters: Parameter[]) => void;
   saveOwners: (owners: Owner[]) => void;
   saveRenters: (renters: Renter[]) => void;
+  filterParameters: (value: string) => void;
+  filterOwners: (value: string) => void;
+  filterRenters: (value: string) => void;
 }
 
 export const MyContext = createContext<GlobalContextProps | undefined>(
@@ -50,9 +53,43 @@ export const Provider: React.FC<Children> = ({ children }) => {
     }));
   };
 
+  const filterOwners = (value: string) => {
+    setState((prevState) => ({
+      ...prevState,
+      owners: prevState.owners.filter((o) =>
+        o.nombreCompleto.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+      ),
+    }));
+  };
+
+  const filterRenters = (value: string) => {
+    setState((prevState) => ({
+      ...prevState,
+      renters: prevState.renters.filter((r) =>
+        r.nombreCompleto.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+      ),
+    }));
+  };
+  const filterParameters = (value: string) => {
+    setState((prevState) => ({
+      ...prevState,
+      parameters: prevState.parameters.filter((p) =>
+        p.nombre.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+      ),
+    }));
+  };
+
   return (
     <MyContext.Provider
-      value={{ state, saveParameters, saveOwners, saveRenters }}
+      value={{
+        state,
+        saveParameters,
+        saveOwners,
+        saveRenters,
+        filterParameters,
+        filterOwners,
+        filterRenters,
+      }}
     >
       {children}
     </MyContext.Provider>

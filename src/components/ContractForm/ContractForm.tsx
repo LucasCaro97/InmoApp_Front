@@ -7,7 +7,10 @@ import { getContractTypes } from "../../utils/contractTypes/getContractTypes";
 import { createNewContract } from "../../utils/contract/createNewContract";
 import { validateContractForm } from "../../utils/validation/validateContractForm";
 import { FormEvent, useEffect, useState } from "react";
+import editImage from "../../icons/edit.png";
 import styles from "./ContractForm.module.css";
+import { useParams } from "react-router-dom";
+import { getContract } from "../../utils/contract/getContract";
 
 const ContractForm = (): JSX.Element => {
   const initialState: Contract = {
@@ -31,6 +34,35 @@ const ContractForm = (): JSX.Element => {
   const [indexs, setIndexs] = useState<Array<Index>>([]);
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [endpoint, setEndPoint] = useState<string>("");
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const { id } = useParams();
+
+  useEffect(() => {
+    const checkParams = async () => {
+      if (id?.length) {
+        setEditMode(true);
+        const result = await getContract(id);
+        if (result.ok && result.data)
+          setNewContract({
+            inmuebleId: result.data.inmueble?.id ?? 0,
+            inquilinoId: result.data.inquilino?.id ?? 0,
+            tipoContratoId: result.data.tipoContrato?.id ?? 0,
+            fechaInicio: result.data.fechaInicio,
+            fechaFin: result.data.fechaFin,
+            observaciones: result.data.observaciones,
+            estadoContrato: result.data.estadoContrato,
+            importeBase: result.data.importeBase,
+            indice:
+              (typeof result.data.indice !== "number" &&
+                result.data.indice.id) ||
+              0,
+            actualizaCada: result.data.actualizaCada,
+          });
+      }
+    };
+    checkParams();
+  }, []);
+
   useEffect(() => {
     const loadValues = async () => {
       const properties = await getProperties();
@@ -106,144 +138,157 @@ const ContractForm = (): JSX.Element => {
     e.preventDefault();
     const validate = validateContractForm(newContract);
     if (validate.ok) {
-      const resul = await createNewContract(newContract);
-      resul.ok ? toast.success(resul.message) : toast.error(resul.message);
+      if (editMode) {
+        alert("Editar");
+      } else {
+        const resul = await createNewContract(newContract);
+        resul.ok ? toast.success(resul.message) : toast.error(resul.message);
+      }
     } else {
       toast.error(validate.message);
     }
   };
+  console.log(newContract);
   return (
     <>
       {openForm ? (
         <ModalForm endpoint={endpoint} setOpenForm={setOpenForm} />
       ) : null}
-
-      <h3 className={styles.title}>Nuevo contrato</h3>
-      <form className={styles.formContainer} onSubmit={handleSubmit}>
-        <label htmlFor="inmuebleId">Inmueble</label>
-        <select
-          onChange={handleSelectChange}
-          name="inmuebleId"
-          id="inmuebleId"
-          value={newContract.inmuebleId}
-        >
-          <option value="">Seleccione un inmueble</option>
-          {propertiesList?.map((p, i) => (
-            <option key={p.nombre + i} value={p.id}>
-              {p.nombre}
-            </option>
-          ))}
-        </select>
-
-        <label htmlFor="inquilinoId">Inquilino</label>
-        <select
-          onChange={handleSelectChange}
-          name="inquilinoId"
-          id="inquilinoId"
-          value={newContract.inquilinoId}
-        >
-          <option value="">Seleccione un inquilino</option>
-          {rentersList?.map((inq, i) => (
-            <option key={inq.nombreCompleto + i} value={inq.id}>
-              {inq.nombreCompleto}
-            </option>
-          ))}
-        </select>
-
-        <div className={styles.section}>
-          <div>
-            <label htmlFor="tipoContratoId">Tipo de contrato</label>
-            <select
-              onChange={handleSelectChange}
-              name="tipoContratoId"
-              id="tipoContratoId"
-              value={newContract.tipoContratoId}
-            >
-              <option value="">Seleccione un tipo de contrato</option>
-              {contractTypes?.map((c, i) => (
-                <option key={i} value={c.id}>
-                  {c && c.nombre[0].toLocaleUpperCase() + c.nombre.slice(1)}
-                </option>
-              ))}
-            </select>
-          </div>
-          <span
-            onClick={() => {
-              handleOpenForm("tipocontrato");
-            }}
+      <div className="flex flex-col place-items-center p-5">
+        <form className={styles.formContainer} onSubmit={handleSubmit}>
+          <h3 className={styles.title}>
+            {editMode ? "Editar" : "Nuevo"} contrato
+          </h3>
+          <label htmlFor="inmuebleId">Inmueble</label>
+          <select
+            onChange={handleSelectChange}
+            name="inmuebleId"
+            id="inmuebleId"
+            value={newContract.inmuebleId}
           >
-            +
-          </span>
-        </div>
+            <option value="">Seleccione un inmueble</option>
+            {propertiesList?.map((p, i) => (
+              <option key={p.nombre + i} value={p.id}>
+                {p.nombre}
+              </option>
+            ))}
+          </select>
 
-        <label htmlFor="indexSelect">Indice:</label>
-        <select
-          name="indice"
-          id="indexSelect"
-          value={newContract.indice}
-          onChange={handleSelectChange}
-        >
-          <option value="">Seleccione un índice</option>
-          {indexs.map((index, i) => (
-            <option key={index.nombre + i} value={index.id}>
-              {index.nombre}
-            </option>
-          ))}
-        </select>
+          <label htmlFor="inquilinoId">Inquilino</label>
+          <select
+            onChange={handleSelectChange}
+            name="inquilinoId"
+            id="inquilinoId"
+            value={newContract.inquilinoId}
+          >
+            <option value="">Seleccione un inquilino</option>
+            {rentersList?.map((inq, i) => (
+              <option key={inq.nombreCompleto + i} value={inq.id}>
+                {inq.nombreCompleto}
+              </option>
+            ))}
+          </select>
 
-        <label htmlFor="fechaInicio">Fecha de inicio</label>
-        <input
-          type="date"
-          id="fechaInicio"
-          name="fechaInicio"
-          onChange={handleInputChange}
-          value={newContract.fechaInicio}
-        />
+          <div className={styles.section}>
+            <div>
+              <label htmlFor="tipoContratoId">Tipo de contrato</label>
+              <select
+                onChange={handleSelectChange}
+                name="tipoContratoId"
+                id="tipoContratoId"
+                value={newContract.tipoContratoId}
+              >
+                <option value="">Seleccione un tipo de contrato</option>
+                {contractTypes?.map((c, i) => (
+                  <option key={i} value={c.id}>
+                    {c && c.nombre[0].toLocaleUpperCase() + c.nombre.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-        <label htmlFor="fechaFin">Fecha de fin</label>
-        <input
-          type="date"
-          id="fechaFin"
-          name="fechaFin"
-          onChange={handleInputChange}
-          value={newContract.fechaFin}
-        />
+            <span
+              onClick={() => {
+                handleOpenForm("tipocontrato");
+              }}
+            >
+              +
+            </span>
+          </div>
 
-        <label htmlFor="importeBase">Precio base:</label>
-        <input
-          type="number"
-          min={0}
-          step={0.1}
-          placeholder="$"
-          onChange={handleInputChange}
-          name="importeBase"
-          id="importeBase"
-          value={newContract.importeBase || selectedValue}
-        />
+          <label htmlFor="indexSelect">Indice:</label>
+          <select
+            name="indice"
+            id="indexSelect"
+            value={
+              typeof newContract.indice === "number" ? newContract.indice : 0
+            }
+            onChange={handleSelectChange}
+          >
+            <option value="">Seleccione un índice</option>
+            {indexs.map((index, i) => (
+              <option key={index.nombre + i} value={index.id}>
+                {index.nombre}
+              </option>
+            ))}
+          </select>
 
-        <label htmlFor="actualizaCada">Actualiza cada:</label>
-        <input
-          type="number"
-          id="actualizaCada"
-          name="actualizaCada"
-          step={1}
-          min={1}
-          placeholder="1, 2, 3...(Meses)"
-          onChange={handleInputChange}
-          value={newContract.actualizaCada}
-        />
+          <label htmlFor="fechaInicio">Fecha de inicio</label>
+          <input
+            type="date"
+            id="fechaInicio"
+            name="fechaInicio"
+            onChange={handleInputChange}
+            value={newContract.fechaInicio}
+          />
 
-        <label htmlFor="observaciones">Observaciones</label>
-        <textarea
-          id="observaciones"
-          onInput={handleInputChange}
-          name="observaciones"
-          value={newContract.observaciones}
-          rows={5}
-        />
+          <label htmlFor="fechaFin">Fecha de fin</label>
+          <input
+            type="date"
+            id="fechaFin"
+            name="fechaFin"
+            onChange={handleInputChange}
+            value={newContract.fechaFin}
+          />
 
-        <button type="submit">Crear contrato</button>
-      </form>
+          <label htmlFor="importeBase">Precio base:</label>
+          <input
+            type="number"
+            min={0}
+            step={0.1}
+            placeholder="$"
+            onChange={handleInputChange}
+            name="importeBase"
+            id="importeBase"
+            value={newContract.importeBase || selectedValue}
+          />
+
+          <label htmlFor="actualizaCada">Actualiza cada:</label>
+          <input
+            type="number"
+            id="actualizaCada"
+            name="actualizaCada"
+            step={1}
+            min={1}
+            placeholder="1, 2, 3...(Meses)"
+            onChange={handleInputChange}
+            value={newContract.actualizaCada}
+          />
+
+          <label htmlFor="observaciones">Observaciones</label>
+          <textarea
+            id="observaciones"
+            onInput={handleInputChange}
+            name="observaciones"
+            value={newContract.observaciones}
+            rows={5}
+          />
+
+          <button type="submit">
+            {editMode ? "Editar" : "Crear"} contrato
+          </button>
+        </form>
+      </div>
     </>
   );
 };
