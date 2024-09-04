@@ -1,4 +1,6 @@
 import { FormEvent, useState } from "react";
+import { updateSpreadSheet } from "../../utils/spreadSheet/updateSpreadSheet";
+import { toast } from "react-toastify";
 
 const Report = (): JSX.Element => {
   type Date = {
@@ -10,10 +12,18 @@ const Report = (): JSX.Element => {
   const handleExport = async () => {
     const BASE_URL = import.meta.env.VITE_BASE_URL_API;
     if (date.month && date.year) {
-      window.open(
-        `${BASE_URL}/planillamensual/exportar/${date.month}/${date.year}`,
-        "_blank"
+      const result = await updateSpreadSheet(
+        date.month.toString(),
+        date.year.toString()
       );
+      if (result.ok) {
+        window.open(
+          `${BASE_URL}/planillamensual/exportar/${date.month}/${date.year}`,
+          "_blank"
+        );
+      } else {
+        toast.error(result.message);
+      }
     }
   };
 

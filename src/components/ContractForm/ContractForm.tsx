@@ -7,7 +7,6 @@ import { getContractTypes } from "../../utils/contractTypes/getContractTypes";
 import { createNewContract } from "../../utils/contract/createNewContract";
 import { validateContractForm } from "../../utils/validation/validateContractForm";
 import { FormEvent, useEffect, useState } from "react";
-import editImage from "../../icons/edit.png";
 import styles from "./ContractForm.module.css";
 import { useParams } from "react-router-dom";
 import { getContract } from "../../utils/contract/getContract";
@@ -124,7 +123,8 @@ const ContractForm = (): JSX.Element => {
     const validate = validateContractForm(newContract);
     if (validate.ok) {
       if (editMode) {
-        await editContract(id, newContract);
+        const resul = await editContract(id, newContract);
+        resul.ok ? toast.success(resul.message) : toast.error(resul.message);
       } else {
         const resul = await createNewContract(newContract);
         resul.ok ? toast.success(resul.message) : toast.error(resul.message);
