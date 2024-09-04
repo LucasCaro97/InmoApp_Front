@@ -19,7 +19,15 @@ type Renter = {
   correo: string;
 };
 
+type Parameter = {
+  id: number;
+  nombre: string;
+};
 type Option = {
+  id: number;
+  nombre: string;
+};
+type Index = {
   id: number;
   nombre: string;
 };
@@ -43,6 +51,12 @@ type Property = {
 };
 
 type Contract = {
+  id?: number;
+  inquilino?: Renter;
+  propietario?: Owner;
+  estadoContrato?: ContractType | number;
+  tipoContrato?: ContractType;
+  inmueble?: Property;
   inmuebleId: number;
   inquilinoId: number;
   tipoContratoId: number;
@@ -51,13 +65,8 @@ type Contract = {
   observaciones: string;
   estadoContrato: number;
   importeBase: number;
-  indice: number;
+  indice: Index | number;
   actualizaCada: number;
-};
-
-type Index = {
-  id: number;
-  nombre: string;
 };
 
 type ContractType = {

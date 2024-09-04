@@ -1,25 +1,27 @@
-import { useEffect, useState } from "react";
-import { getRenters } from "../../utils/renters/getRenters";
-import deleteImage from "../../icons/delete.png";
 import editImage from "../../icons/edit.png";
-import { deleteRenter } from "../../utils/renters/deleteRenter";
+import deleteImage from "../../icons/delete.png";
 import { toast } from "react-toastify";
-import { useNavigate, useParams } from "react-router-dom";
+import { MyContext } from "../../store/Provider";
+import { getRenters } from "../../utils/renters/getRenters";
+import { useNavigate } from "react-router-dom";
+import { deleteRenter } from "../../utils/renters/deleteRenter";
 import { ModalConfirm } from "../ModalConfirm/ModalConfirm";
-import "./styles.css";
+import { useContext, useEffect, useState } from "react";
 type Props = {
   openForm : boolean
 }
 const RentersTable = ({openForm } : Props ): JSX.Element => {
   const navigate = useNavigate();
-  const [renters, setRenters] = useState<Array<Renter>>([]);
+  const context = useContext(MyContext)
+  const renters = context?.state.renters
+  const saveRenters = context?.saveRenters
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [renterToDelete, setRenterToDelete] = useState<number>();
   useEffect(() => {
     const loadOwners = async () => {
       const result = await getRenters();
       if (result) {
-        setRenters(result);
+        saveRenters!(result);
       }
     };
     loadOwners();
@@ -36,7 +38,7 @@ const RentersTable = ({openForm } : Props ): JSX.Element => {
       console.log(result);
       if (result.ok) {
         toast.success(result.message);
-        setRenters(renters.filter((renter) => renter.id !== renterToDelete));
+        renters && saveRenters!(renters.filter((renter) => renter.id !== renterToDelete));
       } else {
         toast.error("No se puedo eliminar el inquilino");
       }
@@ -55,7 +57,7 @@ const RentersTable = ({openForm } : Props ): JSX.Element => {
         />
       ) : null}
       <div className="container mx-auto mb-4">
-        {renters.length > 0 ? (
+        {renters && renters.length > 0 ? (
           <table className="table-auto w-full border-collapse border border-gray-300">
             <thead>
               <tr>

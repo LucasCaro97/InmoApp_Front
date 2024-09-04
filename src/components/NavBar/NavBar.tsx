@@ -143,7 +143,7 @@ const NavBar = (): JSX.Element => {
                 <option value="" disabled>
                   Gestión
                 </option>
-                <option value="nuevoContrato">Contratos</option>
+                <option value="contratos">Contratos</option>
                 <option value="reporte">Reporte</option>
               </select>
             </li>

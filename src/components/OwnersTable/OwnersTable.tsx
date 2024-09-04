@@ -1,27 +1,30 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { getOwners } from "../../utils/owners/getOwners";
 import deleteImage from "../../icons/delete.png";
 import editImage from "../../icons/edit.png";
 import { deleteOwner } from "../../utils/owners/deleteOwner";
-import "./styles.css";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { ModalConfirm } from "../ModalConfirm/ModalConfirm";
+import { MyContext } from "../../store/Provider";
 type Props = {
-  openForm: boolean
-}
-const OwnersTable = ({openForm}: Props): JSX.Element => {
+  openForm: boolean;
+};
+const OwnersTable = ({ openForm }: Props): JSX.Element => {
+  const context = useContext(MyContext);
+  const owners = context?.state.owners;
+  const saveOwners = context?.saveOwners;
+  const filterOwners = context?.filterOwners;
   const navigate = useNavigate();
-  const [owners, setOwners] = useState<Array<Owner>>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [ownerToDelete, setOwnerToDelete] = useState<number>();
+  const loadOwners = async () => {
+    const result = await getOwners();
+    if (result) {
+      saveOwners!(result);
+    }
+  };
   useEffect(() => {
-    const loadOwners = async () => {
-      const result = await getOwners();
-      if (result) {
-        setOwners(result);
-      }
-    };
     loadOwners();
   }, [openForm]);
   const handleDelete = async (id: number | undefined) => {
@@ -36,7 +39,8 @@ const OwnersTable = ({openForm}: Props): JSX.Element => {
       console.log(result);
       if (result.ok) {
         toast.success(result.message);
-        setOwners(owners.filter((owner) => owner.id !== ownerToDelete));
+        owners &&
+          saveOwners!(owners.filter((owner) => owner.id !== ownerToDelete));
       } else {
         toast.error("No se puedo eliminar el propietario");
       }
@@ -44,6 +48,15 @@ const OwnersTable = ({openForm}: Props): JSX.Element => {
   };
   const handleEdit = (id: number | undefined) => {
     navigate(`/editarPropietario/${id}`);
+  };
+  const handleSearchInput = (e: FormEvent<HTMLInputElement>) => {
+    const { value } = e.currentTarget;
+
+    if (value.length) {
+      filterOwners!(value);
+    } else {
+      loadOwners();
+    }
   };
   return (
     <div className="ownersTable">
@@ -54,8 +67,17 @@ const OwnersTable = ({openForm}: Props): JSX.Element => {
           onConfirm={confirmDelete}
         />
       ) : null}
+      <div>
+        <label htmlFor="inputSearch">Buscar:</label>
+        <input
+          type="text"
+          name="inputSearch"
+          id="inputSearch"
+          onInput={handleSearchInput}
+        />
+      </div>
       <div className="container mx-auto mb-4">
-        {owners.length > 0 ? (
+        {owners && owners.length > 0 ? (
           <table className="table-auto w-full border-collapse border border-gray-300">
             <thead>
               <tr>

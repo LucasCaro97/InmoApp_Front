@@ -49,7 +49,7 @@ const Card = ({ id, title, imageUrl, description }) => {
   return (
     <>
       <div className="cardContainer">
-        <div className="h-full rounded-xl bg-custom-green border-2 border-lime-700 flex-col justify-center items-center">
+        <div className="h-full rounded-md border border-teal-600 flex-col justify-center items-center">
           <div className={"buttonsSection"}>
             {isAuthenticated() && (
               <div className="flex gap-2">
