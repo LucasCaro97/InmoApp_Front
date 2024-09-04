@@ -10,15 +10,17 @@ const OwnersView = (): JSX.Element => {
 
   return (
     <div className="container mx-auto p-4 bg-white shadow-lg rounded-lg">
-      <h2 className="text-3xl font-bold mb-4">Propietarios</h2>
-      <button
-        className="bg-green-900 text-slate-300 text-lg px-6 py-1 rounded-xl hover:bg-green-700 transition duration-300"
-        onClick={handleOpenForm}
-      >
-        {openForm ? "Cerrar formulario" : "Nuevo Propietario"}
-      </button>
-      {openForm ? <OwnerForm setOpenForm = {setOpenForm}/> : null}
-      <OwnersTable openForm = {openForm}/>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-bold text-[#2c3e50]">Propietarios</h2>
+        <button
+          className="bg-[#1abc9c] text-white text-lg px-6 py-2 rounded-md shadow hover:bg-[#16a085] focus:outline-none focus:ring-2 focus:ring-[#1abc9c] transition duration-200"
+          onClick={handleOpenForm}
+        >
+          {openForm ? "Cerrar formulario" : "Nuevo Propietario"}
+        </button>
+      </div>
+      {openForm && <OwnerForm setOpenForm={setOpenForm} />}
+      <OwnersTable openForm={openForm} />
     </div>
   );
 };

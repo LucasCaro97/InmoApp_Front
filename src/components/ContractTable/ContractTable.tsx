@@ -1,6 +1,8 @@
 import editImage from "../../icons/edit.png";
 import deleteImage from "../../icons/delete.png";
 import { useNavigate } from "react-router-dom";
+import { deleteContract } from "../../utils/contract/deleteContract";
+import { toast } from "react-toastify";
 type Props = {
   contracts: Array<Contract>;
 };
@@ -13,6 +15,16 @@ const ContractTable = ({ contracts }: Props): JSX.Element => {
   const handleEdit = (id: number | undefined) => {
     if (id) {
       navigate(`/formulario-contrato/${id}`);
+    }
+  };
+  const handleDelete = async (id: number | undefined) => {
+    if (id) {
+      const result = await deleteContract(id.toString());
+      if (result.ok) {
+        toast.success(result.message);
+      } else {
+        toast.error(result.message);
+      }
     }
   };
   return (
@@ -90,7 +102,10 @@ const ContractTable = ({ contracts }: Props): JSX.Element => {
                 </td>
                 <td className="border border-gray-300 px-3 py-1">
                   <span className="iconsRow">
-                    <img src={deleteImage} />
+                    <img
+                      src={deleteImage}
+                      onClick={() => handleDelete(contract.id)}
+                    />
                     <img
                       src={editImage}
                       onClick={() => handleEdit(contract.id)}

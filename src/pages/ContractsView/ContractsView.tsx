@@ -23,11 +23,18 @@ const ContractsView = (): JSX.Element => {
   };
 
   return (
-    <>
-      <h2>Contratos</h2>
-      <button onClick={handleRedirect}>Nuevo</button>
+    <div className="mx-auto my-6 p-2">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold text-[#2c3e50]">Contratos</h2>
+        <button
+          onClick={handleRedirect}
+          className="bg-[#1abc9c] text-white text-lg px-6 py-2 rounded-md shadow hover:bg-[#16a085] focus:outline-none focus:ring-2 focus:ring-[#1abc9c] transition duration-200 mb-4"
+        >
+          Nuevo
+        </button>
+      </div>
       <ContractTable contracts={contracts} />
-    </>
+    </div>
   );
 };
 

@@ -11,6 +11,7 @@ import editImage from "../../icons/edit.png";
 import styles from "./ContractForm.module.css";
 import { useParams } from "react-router-dom";
 import { getContract } from "../../utils/contract/getContract";
+import { editContract } from "../../utils/contract/editContract";
 
 const ContractForm = (): JSX.Element => {
   const initialState: Contract = {
@@ -29,7 +30,6 @@ const ContractForm = (): JSX.Element => {
   const [newContract, setNewContract] = useState<Contract>(initialState);
   const [propertiesList, setPropertiesList] = useState<Array<Property>>();
   const [rentersList, setRentersList] = useState<Array<Renter>>();
-  const [selectedValue, setSelectedValue] = useState<number>(0);
   const [contractTypes, setNewContractTypes] = useState<Array<ContractType>>();
   const [indexs, setIndexs] = useState<Array<Index>>([]);
   const [openForm, setOpenForm] = useState<boolean>(false);
@@ -50,7 +50,11 @@ const ContractForm = (): JSX.Element => {
             fechaInicio: result.data.fechaInicio,
             fechaFin: result.data.fechaFin,
             observaciones: result.data.observaciones,
-            estadoContrato: result.data.estadoContrato,
+            estadoContrato:
+              result?.data?.estadoContrato &&
+              typeof result?.data?.estadoContrato !== "number"
+                ? result.data.estadoContrato.id
+                : 0,
             importeBase: result.data.importeBase,
             indice:
               (typeof result.data.indice !== "number" &&
@@ -89,57 +93,38 @@ const ContractForm = (): JSX.Element => {
     e: FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.currentTarget;
-    name === "actualizaCada" || name === "importeBase"
-      ? setNewContract({
-          ...newContract,
-          [name]: Number(value),
-        })
-      : setNewContract({
-          ...newContract,
-          [name]: value,
-        });
+    if (name === "actualizaCada" || name === "importeBase") {
+      setNewContract({
+        ...newContract,
+        [name]: Number(value),
+      });
+    } else {
+      setNewContract({
+        ...newContract,
+        [name]: value,
+      });
+    }
   };
 
   const handleSelectChange = (e: FormEvent<HTMLSelectElement>) => {
     const selectedValue: string = e.currentTarget.value;
     const name = e.currentTarget.name;
-    if (
-      name === "inmuebleId" ||
-      name === "inquilinoId" ||
-      name === "tipoContratoId"
-    ) {
-      setNewContract({
-        ...newContract,
-        [name]: Number(selectedValue),
-      });
-    } else {
-      setNewContract({
-        ...newContract,
-        [name]: selectedValue,
-      });
-    }
+    setNewContract({
+      ...newContract,
+      [name]: Number(selectedValue),
+    });
   };
   const handleOpenForm = (endpoint: string) => {
     setOpenForm(true);
     setEndPoint(endpoint);
   };
 
-  useEffect(() => {
-    const selectedProp = propertiesList
-      ?.filter((p) => p.id === newContract.inmuebleId)
-      .pop();
-    if (selectedProp) setSelectedValue(selectedProp?.precioAlquiler);
-  }, [newContract]);
-  useEffect(() => {
-    setNewContract({ ...newContract, importeBase: selectedValue });
-  }, [selectedValue]);
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const validate = validateContractForm(newContract);
     if (validate.ok) {
       if (editMode) {
-        alert("Editar");
+        await editContract(id, newContract);
       } else {
         const resul = await createNewContract(newContract);
         resul.ok ? toast.success(resul.message) : toast.error(resul.message);
@@ -148,7 +133,6 @@ const ContractForm = (): JSX.Element => {
       toast.error(validate.message);
     }
   };
-  console.log(newContract);
   return (
     <>
       {openForm ? (
@@ -251,16 +235,35 @@ const ContractForm = (): JSX.Element => {
             value={newContract.fechaFin}
           />
 
+          <label htmlFor="estadoContrato">Estado:</label>
+          <select
+            onChange={handleSelectChange}
+            name="estadoContrato"
+            id="estadoContrato"
+            value={
+              typeof newContract.estadoContrato === "number"
+                ? newContract.estadoContrato
+                : 0
+            }
+          >
+            <option value={0} disabled>
+              Seleccione un estado.
+            </option>
+            <option value={1}>En trámite</option>
+            <option value={2}>Frimado</option>
+            <option value={3}>Resindido</option>
+          </select>
+
           <label htmlFor="importeBase">Precio base:</label>
           <input
-            type="number"
             min={0}
             step={0.1}
+            type="number"
             placeholder="$"
-            onChange={handleInputChange}
-            name="importeBase"
             id="importeBase"
-            value={newContract.importeBase || selectedValue}
+            name="importeBase"
+            onChange={handleInputChange}
+            value={newContract.importeBase}
           />
 
           <label htmlFor="actualizaCada">Actualiza cada:</label>

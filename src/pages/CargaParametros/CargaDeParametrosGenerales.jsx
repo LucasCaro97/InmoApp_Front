@@ -87,26 +87,36 @@ const CargaDeParametrosGenerales = ({ tipoParametro }) => {
   };
   return (
     <>
-      <div className="container mx-auto mb-4">
-        <h1 className="text-3xl font-bold mb-4">Tabla de {tipoParametro}</h1>
-        <button
-          className="bg-green-900 text-slate-300 text-lg px-6 py-1 rounded-xl mb-2"
-          onClick={() => {
-            setOpenEditForm(!openEditForm);
-            setEditMode(false);
-          }}
-        >
-          {!openEditForm ? "Nuevo" : "Cerrar"}
-        </button>
+      <div className="container mx-auto mb-4 my-4">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-3xl font-bold text-[#2c3e50] mb-4">
+            Tabla de {tipoParametro}
+          </h1>
+          <button
+            className="bg-[#1abc9c] text-white text-lg px-6 py-2 rounded-md shadow hover:bg-[#16a085] focus:outline-none focus:ring-2 focus:ring-[#1abc9c] transition duration-200 mb-4"
+            onClick={() => {
+              setOpenEditForm(!openEditForm);
+              setEditMode(false);
+            }}
+          >
+            {!openEditForm ? "Nuevo" : "Cerrar"}
+          </button>
+        </div>
         {openEditForm && (
-          <form className="updateForm" onSubmit={handleSubmit}>
-            <label>{!editMode ? "Nuevo" : "Cambiar"} valor:</label>
+          <form
+            className="bg-white p-4 rounded-md shadow-md border border-gray-200"
+            onSubmit={handleSubmit}
+          >
+            <label className="block text-[#2c3e50] font-medium mb-2">
+              {!editMode ? "Nuevo" : "Cambiar"} valor:
+            </label>
             <input
               type="text"
               value={editMode ? paramToEdit.nombre : newParam}
               onChange={handleChange}
+              className="w-full px-3 py-2 mb-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1abc9c]"
             />
-            <button className="bg-green-900 text-slate-300 text-lg px-6 py-1 rounded-xl mb-2">
+            <button className="bg-[#1abc9c] text-white text-lg px-6 py-2 rounded-md shadow hover:bg-[#16a085] focus:outline-none focus:ring-2 focus:ring-[#1abc9c] transition duration-200">
               {editMode ? "Actualizar" : "Crear"}
             </button>
           </form>
