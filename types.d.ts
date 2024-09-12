@@ -73,3 +73,21 @@ type ContractType = {
   id: number;
   nombre: string;
 };
+
+type Detalle ={
+  id: number;
+  contrato: Contract;
+  importeAlquiler: number;
+  expensas?: any;
+  honorarios: number;
+  montoARendir?: any;
+  fechaCobro?: any;
+  fechaRendicion?: any;
+  observacion?: any;
+}
+type SpreadSheet = {
+  id: number;
+  mes: number;
+  anio: number;
+  detalles: Detalle[];
+};

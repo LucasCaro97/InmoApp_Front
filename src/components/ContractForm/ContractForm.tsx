@@ -133,6 +133,18 @@ const ContractForm = (): JSX.Element => {
       toast.error(validate.message);
     }
   };
+
+  useEffect(() => {
+    const property = propertiesList
+      ?.filter((p) => p.id === newContract.inmuebleId)
+      .pop();
+    if (property) {
+      setNewContract({
+        ...newContract,
+        importeBase: property.precioAlquiler,
+      });
+    }
+  }, [newContract.inmuebleId]);
   return (
     <>
       {openForm ? (

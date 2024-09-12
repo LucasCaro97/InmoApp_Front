@@ -86,23 +86,23 @@ const NavBar = (): JSX.Element => {
           <li>Acerca de</li>
         </Link>
 
+        <li>
+          <select
+            id="inmueble-select"
+            name="inmueble"
+            onChange={handleSelectChange}
+            value={optionTitles.inmueble}
+          >
+            <option value="" disabled>
+              Inmuebles
+            </option>
+            <option value="alquiler">Alquiler</option>
+            <option value="venta">Venta</option>
+            {isAuth ? <option value="nuevo-inmueble">Nuevo</option> : null}
+          </select>
+        </li>
         {isAuth ? (
           <>
-            <li>
-              <select
-                id="inmueble-select"
-                name="inmueble"
-                onChange={handleSelectChange}
-                value={optionTitles.inmueble}
-              >
-                <option value="" disabled>
-                  Inmuebles
-                </option>
-                <option value="alquiler">Alquiler</option>
-                <option value="venta">Venta</option>
-                <option value="nuevo-inmueble">Nuevo</option>
-              </select>
-            </li>
             <li>
               <select
                 id="clientes-select"
