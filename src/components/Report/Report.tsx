@@ -1,6 +1,8 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { updateSpreadSheet } from "../../utils/spreadSheet/updateSpreadSheet";
 import { toast } from "react-toastify";
+import { ReportTable } from "../ReportTable/ReportTable";
+import { getSpreadSheet } from "../../utils/spreadSheet/getSpreadSheet";
 
 const Report = (): JSX.Element => {
   type Date = {
@@ -8,6 +10,9 @@ const Report = (): JSX.Element => {
     year: number;
   };
   const [date, setDate] = useState<Date>({ month: 0, year: 0 });
+  const [spreadSheet, setSpreadSheet] = useState<SpreadSheet | undefined>(
+    undefined
+  );
 
   const handleExport = async () => {
     const BASE_URL = import.meta.env.VITE_BASE_URL_API;
@@ -27,6 +32,20 @@ const Report = (): JSX.Element => {
     }
   };
 
+  useEffect(() => {
+    const updateTable = async () => {
+      const { month, year } = date;
+      const result = await getSpreadSheet(month, year);
+      if (result.ok && result.data) {
+        setSpreadSheet(result.data);
+        console.log(result.data)
+      } else {
+        setSpreadSheet(undefined);
+      }
+    };
+    updateTable();
+  }, [date]);
+
   const handleChange = (e: FormEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
     setDate({
@@ -36,16 +55,13 @@ const Report = (): JSX.Element => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-[#2c3e50] rounded-lg shadow-md space-y-4 my-5">
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="month" className="text-[#ecf0f1] font-semibold">
-          Mes:
-        </label>
+    <>
+      <div className="max-w-xl mx-auto flex items-center justify-around bg-[#2c3e50] rounded-sm shadow-md p-2 space-x-2 my-5">
         <select
           name="month"
           id="month"
           onChange={handleChange}
-          className="border-[#34495e] rounded-md shadow-sm focus:ring-2 focus:ring-[#1abc9c] focus:border-[#1abc9c] p-2 bg-[#2c3e50] text-[#ecf0f1]"
+          className="border-none rounded-sm  focus:ring-2 focus:ring-[#1abc9c] focus:border-[#1abc9c] p-2 bg-[#3c556e] text-[#ecf0f1] "
         >
           <option value={1}>Enero</option>
           <option value={2}>Febrero</option>
@@ -60,31 +76,33 @@ const Report = (): JSX.Element => {
           <option value={11}>Noviembre</option>
           <option value={12}>Diciembre</option>
         </select>
+
+        <span className="flex flex-row place-items-center">
+          <label htmlFor="year" className="mx-1 text-white">
+            Año:
+          </label>
+          <input
+            type="number"
+            min={0}
+            step={1}
+            id="year"
+            name="year"
+            value={date.year}
+            onInput={handleChange}
+            className="rounded-sm focus:ring-2 focus:ring-[#1abc9c] focus:border-[#1abc9c] p-2 bg-[#3c556e] text-[#ecf0f1] w-20"
+          />
+        </span>
+
+        <button
+          onClick={handleExport}
+          className="bg-[#1abc9c] text-white px-4 py-2 rounded-sm shadow-md hover:bg-[#16a085] focus:outline-none focus:ring-2 focus:ring-[#1abc9c] transition duration-200"
+        >
+          Exportar
+        </button>
       </div>
 
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="year" className="text-[#ecf0f1] font-semibold">
-          Año:
-        </label>
-        <input
-          type="number"
-          min={0}
-          step={1}
-          id="year"
-          name="year"
-          value={date?.year}
-          onInput={handleChange}
-          className="border-[#34495e] rounded-md shadow-sm focus:ring-2 focus:ring-[#1abc9c] focus:border-[#1abc9c] p-2 bg-[#2c3e50] text-[#ecf0f1]"
-        />
-      </div>
-
-      <button
-        onClick={handleExport}
-        className="w-full bg-[#1abc9c] text-white py-2 rounded-md shadow-md hover:bg-[#16a085] focus:outline-none focus:ring-2 focus:ring-[#1abc9c] transition duration-200"
-      >
-        EXPORTAR
-      </button>
-    </div>
+      <ReportTable spreadSheet={spreadSheet} />
+    </>
   );
 };
 
