@@ -38,7 +38,6 @@ const Report = (): JSX.Element => {
       const result = await getSpreadSheet(month, year);
       if (result.ok && result.data) {
         setSpreadSheet(result.data);
-        console.log(result.data)
       } else {
         setSpreadSheet(undefined);
       }
@@ -101,7 +100,7 @@ const Report = (): JSX.Element => {
         </button>
       </div>
 
-      <ReportTable spreadSheet={spreadSheet} />
+      <ReportTable spreadSheet={spreadSheet} setSpreadSheet={setSpreadSheet} month={date.month} year={date.year}/>
     </>
   );
 };
